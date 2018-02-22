@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class move : MonoBehaviour
+public class Move : MonoBehaviour
 {
 
    // public Sprite[] cavernManList;
@@ -18,9 +18,10 @@ public class move : MonoBehaviour
     public KeyCode mForward;
     public KeyCode mBack;
     private float acceleration;
-    private Vector2 direction;
+    //private Vector2 direction;
     private float accelCoef;
-    private float deccelCoef;
+    private float autoDeccelCoef;
+    private float brakingCoef;
 
 
     // Use this for initialization
@@ -32,7 +33,9 @@ public class move : MonoBehaviour
         speedFrame = 0;
         speed = 0;
         accelCoef = 30f;
-        deccelCoef = 50f;
+        autoDeccelCoef = 50f;
+        brakingCoef = 80f;
+
         position = new Vector2(transform.localPosition.x, transform.localPosition.y);
         acceleration = 0.00001f;
         //transform.Rotate(Vector3.forward, 90);
@@ -43,21 +46,22 @@ public class move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(speed > 0.005 && !Input.GetKey(mForward))
+        if(speed > 0.004 && !Input.GetKey(mForward) && !Input.GetKey(mBack))
         {
-            speed -= acceleration * deccelCoef;
+            speed -= acceleration * autoDeccelCoef;
         }
        
         transform.position = transform.position + (transform.rotation * Vector3.up) * speed;
         //avancer 
-        if (Input.GetKey(mForward))
+        if (Input.GetKey(mForward) && speed <0.05)
         {
             speed += acceleration * accelCoef;
         }
         //reculer
-        if (Input.GetKey(mBack))
+        if (Input.GetKey(mBack) && speed > -0.03)
         {
-            deccelCoef -= 0.005f;
+            //brakingCoef -= 0.5f;
+            speed -= acceleration * brakingCoef;
         }
         //tourner à droite
         if (Input.GetKey(turnRight))
