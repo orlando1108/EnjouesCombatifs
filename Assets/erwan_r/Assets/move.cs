@@ -32,7 +32,7 @@ public class Move : MonoBehaviour
     void Start()
     {
         //exhaust = GetComponent<ParticleSystem>();
-        exhaust.Stop();
+        exhaust.emissionRate = 0;
         spRenderer = GetComponent<SpriteRenderer>();
         speed = 0;
         speed_max = 0.12f;
@@ -59,21 +59,22 @@ public class Move : MonoBehaviour
         bool isMovedBack = Input.GetKey(mBack);
         bool isBraked = Input.GetKey(bracking);
 
+        transform.position = transform.position + (transform.rotation * Vector3.up) * speed;
 
-        //rotationSpeed -= speed * 0.25f;
         if (speed > 0.004 && !Input.GetKey(mForward) && !Input.GetKey(mBack))
         {
             speed -= acceleration * autoDeccelCoef;
             rotationSpeed =  getSpeedRotationFromSpeed(speed);
-            exhaust.Stop();
+            exhaust.emissionRate = 2;
         }
         
-        transform.position = transform.position + (transform.rotation * Vector3.up) * speed;
+        
         //avancer 
         if (isMovedForward && speed < speed_max)
         {
-            
-            exhaust.Play();
+
+            //exhaust.Play();
+            exhaust.emissionRate = 15;
             speed += acceleration * moveForwardCoef;
             rotationSpeed = getSpeedRotationFromSpeed(speed);
         }
@@ -114,12 +115,11 @@ public class Move : MonoBehaviour
         
 
     }
-
+    //vitesse de virage inversement proportionnelle à la vitesse
     private float getSpeedRotationFromSpeed(float speedX) 
     {
         float rapport = speed_max * rotationSpeed_min;
-
-        return Mathf.Clamp(Mathf.Abs(rapport * (1 / speedX)), rotationSpeed_min, rotationSpeed_max) *3f;
+        return Mathf.Clamp(Mathf.Abs(rapport * (1 / speedX)), rotationSpeed_min, rotationSpeed_max) * 3f;
          
     }
 }
