@@ -7,37 +7,44 @@ public class Move : MonoBehaviour
 
    // public Sprite[] cavernManList;
     private SpriteRenderer spRenderer;
-    private int currentSpriteId = 0;
-    private int speedFrame;
     private Vector2 position;
-    private float speedX;
-    private float speedY;
     private float speed;
+    public ParticleSystem exhaust;
+    
     public KeyCode turnRight;
     public KeyCode turnLeft;
     public KeyCode mForward;
     public KeyCode mBack;
+    public KeyCode bracking;
     private float acceleration;
     //private Vector2 direction;
-    private float accelCoef;
+    private float moveForwardCoef;
     private float autoDeccelCoef;
     private float brakingCoef;
+    private float moveBackCoef;
+    private float rotationSpeed;
+    private float rotationSpeed_max;
+    private float rotationSpeed_min;
+    private float speed_max;
 
 
     // Use this for initialization
     void Start()
     {
+        //exhaust = GetComponent<ParticleSystem>();
+        exhaust.Stop();
         spRenderer = GetComponent<SpriteRenderer>();
-        speedX = 0.1f;
-        speedY = 0.1f;
-        speedFrame = 0;
         speed = 0;
-        accelCoef = 30f;
+        speed_max = 0.12f;
+        rotationSpeed = 2.5f;
+        moveForwardCoef = 40f;
         autoDeccelCoef = 50f;
-        brakingCoef = 80f;
-
+        moveBackCoef= 20f;
+        brakingCoef = 100f;
         position = new Vector2(transform.localPosition.x, transform.localPosition.y);
         acceleration = 0.00001f;
+        rotationSpeed_max = 1.8f;
+        rotationSpeed_min = 0.5f;
         //transform.Rotate(Vector3.forward, 90);
 
 
@@ -46,36 +53,73 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(speed > 0.004 && !Input.GetKey(mForward) && !Input.GetKey(mBack))
+        bool isTurnedRight = Input.GetKey(turnRight);
+        bool isTurnedLeft = Input.GetKey(turnLeft);
+        bool isMovedForward = Input.GetKey(mForward);
+        bool isMovedBack = Input.GetKey(mBack);
+        bool isBraked = Input.GetKey(bracking);
+
+
+        //rotationSpeed -= speed * 0.25f;
+        if (speed > 0.004 && !Input.GetKey(mForward) && !Input.GetKey(mBack))
         {
             speed -= acceleration * autoDeccelCoef;
+            rotationSpeed =  getSpeedRotationFromSpeed(speed);
+            exhaust.Stop();
         }
-       
+        
         transform.position = transform.position + (transform.rotation * Vector3.up) * speed;
         //avancer 
-        if (Input.GetKey(mForward) && speed <0.05)
+        if (isMovedForward && speed < speed_max)
         {
-            speed += acceleration * accelCoef;
+            
+            exhaust.Play();
+            speed += acceleration * moveForwardCoef;
+            rotationSpeed = getSpeedRotationFromSpeed(speed);
         }
         //reculer
-        if (Input.GetKey(mBack) && speed > -0.03)
+        if (isMovedBack && speed > -0.03)
+        {
+            //brakingCoef -= 0.5f;
+            speed -= acceleration * moveBackCoef;
+        }
+        //freiner
+        if (isBraked && speed > 0)
         {
             //brakingCoef -= 0.5f;
             speed -= acceleration * brakingCoef;
+            rotationSpeed = getSpeedRotationFromSpeed(speed);
         }
+       
         //tourner à droite
-        if (Input.GetKey(turnRight))
+        if (isTurnedRight && speed >0.0005)
         {
-            transform.Rotate(Vector3.back * 2.5f);
+            transform.Rotate(Vector3.back * rotationSpeed);
+
+            if (isBraked)
+            {
+                //transform.Rotate(Vector3.back * rotationSpeed);
+                //transform.Rotate(-Vector3.forward * 3);
+            }
+            
             
         }
         //tourner à gauche
-        if (Input.GetKey(turnLeft))
+        if (isTurnedLeft && speed > 0.0005)
         {
-            transform.Rotate(Vector3.forward * 2.5f);
+            transform.Rotate(Vector3.forward * rotationSpeed);
+            //transform.Rotate(Vector3., 2f );
         }
-       
 
+        
 
+    }
+
+    private float getSpeedRotationFromSpeed(float speedX) 
+    {
+        float rapport = speed_max * rotationSpeed_min;
+
+        return Mathf.Clamp(Mathf.Abs(rapport * (1 / speedX)), rotationSpeed_min, rotationSpeed_max) *3f;
+         
     }
 }
