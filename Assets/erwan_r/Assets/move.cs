@@ -10,12 +10,15 @@ public class Move : MonoBehaviour
     private Vector2 position;
     private float speed;
     public ParticleSystem exhaust;
-    
+    public ParticleSystem skidEffect;
+    public ParticleSystem boost;
+
     public KeyCode turnRight;
     public KeyCode turnLeft;
     public KeyCode mForward;
     public KeyCode mBack;
     public KeyCode bracking;
+    public KeyCode nitro;
     private float acceleration;
     //private Vector2 direction;
     private float moveForwardCoef;
@@ -33,9 +36,11 @@ public class Move : MonoBehaviour
     {
         //exhaust = GetComponent<ParticleSystem>();
         exhaust.emissionRate = 0;
+        skidEffect.emissionRate = 0;
+        boost.emissionRate = 0;
         spRenderer = GetComponent<SpriteRenderer>();
         speed = 0;
-        speed_max = 0.12f;
+        speed_max = 0.05f;
         rotationSpeed = 2.5f;
         moveForwardCoef = 40f;
         autoDeccelCoef = 50f;
@@ -45,6 +50,7 @@ public class Move : MonoBehaviour
         acceleration = 0.00001f;
         rotationSpeed_max = 1.8f;
         rotationSpeed_min = 0.5f;
+        
         //transform.Rotate(Vector3.forward, 90);
 
 
@@ -58,8 +64,10 @@ public class Move : MonoBehaviour
         bool isMovedForward = Input.GetKey(mForward);
         bool isMovedBack = Input.GetKey(mBack);
         bool isBraked = Input.GetKey(bracking);
+        bool isBoosted = Input.GetKey(nitro);
 
         transform.position = transform.position + (transform.rotation * Vector3.up) * speed;
+        skidEffect.emissionRate = 0;
 
         if (speed > 0.004 && !Input.GetKey(mForward) && !Input.GetKey(mBack))
         {
@@ -90,29 +98,42 @@ public class Move : MonoBehaviour
             //brakingCoef -= 0.5f;
             speed -= acceleration * brakingCoef;
             rotationSpeed = getSpeedRotationFromSpeed(speed);
+            skidEffect.emissionRate = 15;
         }
        
         //tourner à droite
         if (isTurnedRight && speed >0.0005)
         {
             transform.Rotate(Vector3.back * rotationSpeed);
-
-            if (isBraked)
-            {
-                //transform.Rotate(Vector3.back * rotationSpeed);
-                //transform.Rotate(-Vector3.forward * 3);
-            }
-            
-            
         }
         //tourner à gauche
         if (isTurnedLeft && speed > 0.0005)
         {
             transform.Rotate(Vector3.forward * rotationSpeed);
-            //transform.Rotate(Vector3., 2f );
         }
 
+        if (isBoosted)
+        {
+            //boost.emissionRate = 10;
+            moveForwardCoef += Mathf.Clamp(0.5f, 40f,70f);
+            speed_max = 0.10f;
+        }
+
+        if (!isBoosted && speed > 0.05)
+        {
+            //boost.emissionRate = 0;
+            moveForwardCoef = 40f;
+            print("BOOST");
+            print("speed MAX  " + speed_max);
+            //speed -= acceleration * moveBackCoef*2;
+            speed -= acceleration * brakingCoef;
+            // moveForwardCoef -= Mathf.Clamp(0.5f, 40f, 70f);
+            //  speed_max = 0.05f;
+
+        }
         
+
+
 
     }
     //vitesse de virage inversement proportionnelle à la vitesse
