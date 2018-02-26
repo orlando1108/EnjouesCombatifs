@@ -29,18 +29,19 @@ public class Move : MonoBehaviour
     private float rotationSpeed_max;
     private float rotationSpeed_min;
     private float speed_max;
+    private float speedBoost_max;
 
 
     // Use this for initialization
     void Start()
     {
         //exhaust = GetComponent<ParticleSystem>();
-        exhaust.emissionRate = 0;
+      /*  exhaust.emissionRate = 0;
         skidEffect.emissionRate = 0;
         boost.emissionRate = 0;
         spRenderer = GetComponent<SpriteRenderer>();
         speed = 0;
-        speed_max = 0.05f;
+        speed_max = 0.07f;
         rotationSpeed = 2.5f;
         moveForwardCoef = 40f;
         autoDeccelCoef = 50f;
@@ -50,7 +51,8 @@ public class Move : MonoBehaviour
         acceleration = 0.00001f;
         rotationSpeed_max = 1.8f;
         rotationSpeed_min = 0.5f;
-        
+        speedBoost_max = 0.09f;
+        */
         //transform.Rotate(Vector3.forward, 90);
 
 
@@ -59,7 +61,7 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool isTurnedRight = Input.GetKey(turnRight);
+       /* bool isTurnedRight = Input.GetKey(turnRight);
         bool isTurnedLeft = Input.GetKey(turnLeft);
         bool isMovedForward = Input.GetKey(mForward);
         bool isMovedBack = Input.GetKey(mBack);
@@ -115,32 +117,37 @@ public class Move : MonoBehaviour
         if (isBoosted)
         {
             //boost.emissionRate = 10;
-            moveForwardCoef += Mathf.Clamp(0.5f, 40f,70f);
-            speed_max = 0.10f;
+            if (!isBraked)
+            {
+                moveForwardCoef += Mathf.Clamp(0.2f, 40f, 70f);
+                speed_max = speedBoost_max;
+            }
+            
+
+            if (isBraked && speed > 0)
+            {
+                moveForwardCoef = 40f;
+                speed -= acceleration * brakingCoef* 1.2f;
+            }
+
         }
 
-        if (!isBoosted && speed > 0.05)
+        if (!isBoosted && speed > speed_max)
         {
             //boost.emissionRate = 0;
             moveForwardCoef = 40f;
-            print("BOOST");
-            print("speed MAX  " + speed_max);
-            //speed -= acceleration * moveBackCoef*2;
             speed -= acceleration * brakingCoef;
             // moveForwardCoef -= Mathf.Clamp(0.5f, 40f, 70f);
-            //  speed_max = 0.05f;
-
+            speed_max = 0.07f;
         }
-        
 
-
-
+        */
     }
-    //vitesse de virage inversement proportionnelle à la vitesse
+  /*  //vitesse de virage inversement proportionnelle à la vitesse
     private float getSpeedRotationFromSpeed(float speedX) 
     {
         float rapport = speed_max * rotationSpeed_min;
         return Mathf.Clamp(Mathf.Abs(rapport * (1 / speedX)), rotationSpeed_min, rotationSpeed_max) * 3f;
          
-    }
+    }*/
 }
