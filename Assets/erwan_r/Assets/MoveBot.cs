@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveCar : MonoBehaviour {
+public class MoveBot : MonoBehaviour
+{
 
     /* public KeyCode turnRight;
      public KeyCode turnLeft;
@@ -94,17 +95,23 @@ public class MoveCar : MonoBehaviour {
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
-    float speedForce = 6f;
+    public List<Transform> nodes;
+    float speedForce = 1f;
     float torqueForce = -200f;
     float driftFactorSticky = 0.5f;
     float driftFactorSlippy = 0.9f;
     float maxStickyVelocity = 2.5f;
     float minStickyVelocity = 1.5f;
-    AudioSource motorSound;
-    Rigidbody2D car;
     float audioClipSpeed = 6f;
+    public float steering = 4.0f;
+    private int currentNode = 0;
+    AudioSource motorSound;
+    Rigidbody2D bot;
+    Vector3 direction;
+    Vector3 target;
 
-    
+
+
     void Start()
     {
         exhaust.emissionRate = 0;
@@ -112,50 +119,55 @@ public class MoveCar : MonoBehaviour {
         boostEffect.emissionRate = 0;
         motorSound = GetComponent<AudioSource>();
         motorSound.Play();
-        car = GetComponent<Rigidbody2D>();
+        bot = GetComponent<Rigidbody2D>();
 
     }
-
-    //check for button up/down then set a bool will used in fixedUpdate
+    
     void Update()
     {
     }
-        // Update is called once per frame
-        void FixedUpdate()
+    // Update is called once per frame
+    void FixedUpdate()
     {
         float driftFactor = driftFactorSticky;
-        float pitch = car.velocity.magnitude / audioClipSpeed;
+        float pitch = bot.velocity.magnitude / audioClipSpeed;
+
         skidEffect.emissionRate = 0;
         exhaust.emissionRate = 2;
+        SteerTowardsTarget();
+        CheckDistance();
 
-        
+        // ACCELERATE
+         direction = (nodes[currentNode].position - bot.transform.position);
+         bot.AddForce(direction.normalized);
+         exhaust.emissionRate = 15;
+
+        //ROTATE
+        //float targetRot = Vector2.Angle(bot.transform.up, direction);
+        //Debug.Log("ANGLE  " + targetRot);
+        //bot.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, targetRot, 0.05f));
+
+        //MOTOR SOUND
         motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
 
+       // bot.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
 
-        if (RightVelocity().magnitude > maxStickyVelocity)
+        /*if (RightVelocity().magnitude > maxStickyVelocity)
         {
             driftFactor = driftFactorSlippy;
             skidEffect.emissionRate = 15;
 
-        }
+        }*/
 
-        car.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
-
-        if (Input.GetButton("Accelerate"))
-        {
-            car.AddForce(transform.up * speedForce);
-            exhaust.emissionRate = 15;
-
-        }
         if (Input.GetButton("Brakes"))
         {
-            car.AddForce(transform.up * -speedForce/2);
+            bot.AddForce(transform.up * -speedForce / 2);
             skidEffect.emissionRate = 15;
 
         }
         if (Input.GetButton("Boost"))
         {
-           // car.AddForce(transform.up * speedForce);
+            // car.AddForce(transform.up * speedForce);
             speedForce = 10;
             boostEffect.emissionRate = 25;
         }
@@ -164,14 +176,12 @@ public class MoveCar : MonoBehaviour {
             boostEffect.emissionRate = 0;
             speedForce = 6;
         }
+        
+        float tf = Mathf.Lerp(0, torqueForce, bot.velocity.magnitude / 5);
+       // bot.angularVelocity = Input.GetAxis("Horizontal") * tf;
+       // bot.AddTorque(Input.GetAxis("Horizontal") * torqueForce);
 
 
-        //if you are using positionnal wheel in your physics, then you probably instead of aadding angular momentum or torque,
-        // you'll instead want to add left/right force at the position of the two front tire/types proportional to your current forward speed.
-        // we are converting some forward speed into sideway force).
-        float tf = Mathf.Lerp(0, torqueForce, car.velocity.magnitude / 5);
-        car.angularVelocity = Input.GetAxis("Horizontal") * tf;
-        //car.AddTorque(Input.GetAxis("Horizontal") * torqueForce);
     }
 
     Vector2 ForwardVelocity()
@@ -182,10 +192,45 @@ public class MoveCar : MonoBehaviour {
     {
         return transform.right * Vector2.Dot(GetComponent<Rigidbody2D>().velocity, transform.right);
     }
-   /* Vector2 LeftVelocity()
+
+    private void CheckDistance() {
+       // Debug.Log(" DISTANCE " + Vector3.Distance(bot.transform.position, nodes[currentNode].position));
+        if(Vector3.Distance(bot.transform.position, nodes[currentNode].position) < 0.3f)
+        {
+            if(currentNode == nodes.Count - 1)
+            {
+                currentNode = 0;
+            }
+            else
+            {
+                currentNode++;
+                
+
+
+            }
+        }
+
+    }
+
+    void SteerTowardsTarget()
     {
-        return transform.right * Vector2.Dot(GetComponent<Rigidbody2D>().velocity, transform.right);
-    }*/
+       // Vector2 towardNextTrigger = target - bot.transform.position;
+        float targetRot = Vector2.Angle(bot.transform.up, direction);
+        Debug.Log("ROT  " + targetRot);
+
+
+         /*if (direction.y < 0.0f)
+         {
+             targetRot = -targetRot;
+         }*/
+        //float rot = Mathf.MoveTowardsAngle(transform.localEulerAngles.z, targetRot, 0.5f);
+        // bot.MoveRotation(targetRot);
+        /*float rot = Mathf.MoveTowardsAngle(transform.eulerAngles.z, targetRot, steering);
+        transform.eulerAngles = new Vector3(0.0f, 0.0f, rot);*/
+        //bot.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, targetRot, 0.5f));
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, targetRot, 0.01f));
+
+    }
 
 
 }
