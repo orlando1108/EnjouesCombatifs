@@ -96,7 +96,7 @@ public class MoveBot : MonoBehaviour
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
     public List<Transform> nodes;
-    float speedForce = 7f;
+    float speedForce = 6f;
     float torqueForce = -200f;
     float driftFactorSticky = 0.5f;
     float driftFactorSlippy = 0.7f;
@@ -138,6 +138,7 @@ public class MoveBot : MonoBehaviour
     void FixedUpdate()
     {
         float driftFactor = driftFactorSticky;
+        
         float pitch = bot.velocity.magnitude / audioClipSpeed;
 
         CheckDistance();
@@ -161,7 +162,7 @@ public class MoveBot : MonoBehaviour
         //MOTOR SOUND
         motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
 
-       // bot.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
+        // bot.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
 
         /*if (RightVelocity().magnitude > maxStickyVelocity)
         {
@@ -170,23 +171,31 @@ public class MoveBot : MonoBehaviour
 
         }*/
 
-       /* if (Input.GetButton("Brakes"))
+        /* if (Input.GetButton("Brakes"))
+         {
+             bot.AddForce(transform.up * -speedForce / 2);
+             skidEffect.emissionRate = 15;
+
+         }*/
+
+        if (RightVelocity().magnitude > maxStickyVelocity)
         {
-            bot.AddForce(transform.up * -speedForce / 2);
+            driftFactor = driftFactorSlippy;
             skidEffect.emissionRate = 15;
 
         }
-        if (Input.GetButton("Boost"))
+        if (currentNode == 7 || currentNode == 5)
         {
-            // car.AddForce(transform.up * speedForce);
             speedForce = 10;
+            //bot.AddForce(transform.up * speedForce);
             boostEffect.emissionRate = 25;
         }
         else
         {
             boostEffect.emissionRate = 0;
             speedForce = 6;
-        }*/
+
+        }
 
        
 
@@ -235,6 +244,7 @@ public class MoveBot : MonoBehaviour
         // Debug.Log(" DISTANCE " + Vector3.Distance(bot.transform.position, nodes[currentNode].position));
         if (Vector3.Distance(bot.transform.position, nodes[currentNode].position) < 0.5f)
         {
+            speedForce = 2;
             if (currentNode == nodes.Count - 1)
             {
                 currentNode = 0;
