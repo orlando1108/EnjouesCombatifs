@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/erwan_r/Assets/erwan_menu.unity
+    guid: f90b5ddf26bea1546b74fad5f7363f75
+  - enabled: 1
+    path: Assets/erwan_r/Assets/erwan_play.unity
+    guid: f513f4dc16da8e646a7330d282aeaa4e

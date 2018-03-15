@@ -3,16 +3,22 @@ using System.Collections;
 
 public class TrackLapTrigger : MonoBehaviour {
 
-	// next trigger in the lap
-	public TrackLapTrigger next;
+    // next trigger in the lap
+    //public TrackLapTrigger next;
+    public bool verif = false;
 
 	// when an object enters this trigger
 	void OnTriggerEnter2D(Collider2D other) {
-		CarLapCounter carLapCounter = other.gameObject.GetComponent<CarLapCounter>();
+		/*CarLapCounter carLapCounter = other.gameObject.GetComponent<CarLapCounter>();
 		if (carLapCounter) {
 			Debug.Log("lap trigger " + gameObject.name);
 			carLapCounter.OnLapTrigger(this);
-		}
+		}*/
+        if(other.gameObject.tag == "carPlayer" && verif)
+        {
+            GameObject.Find("Canvas").GetComponent<UIscript>().MajLaps();
+            verif = false;
+        }
 	}
 }
 
