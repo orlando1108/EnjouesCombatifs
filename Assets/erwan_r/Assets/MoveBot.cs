@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -103,13 +103,13 @@ public class MoveBot : MonoBehaviour
     float maxStickyVelocity = 2.5f;
     float minStickyVelocity = 1.5f;
     float audioClipSpeed = 6f;
-    
+
     private int currentNode = 0;
     float targetRot;
     AudioSource motorSound;
     Rigidbody2D bot;
     Vector3 direction;
-   
+
 
 
 
@@ -130,7 +130,7 @@ public class MoveBot : MonoBehaviour
         //bot.transform.position = new Vector2(nodes[currentNode].position.x, nodes[currentNode].position.y);
 
     }
-    
+
     void Update()
     {
     }
@@ -161,7 +161,7 @@ public class MoveBot : MonoBehaviour
         //MOTOR SOUND
         motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
 
-       // bot.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
+        // bot.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
 
         /*if (RightVelocity().magnitude > maxStickyVelocity)
         {
@@ -170,25 +170,25 @@ public class MoveBot : MonoBehaviour
 
         }*/
 
-       /* if (Input.GetButton("Brakes"))
-        {
-            bot.AddForce(transform.up * -speedForce / 2);
-            skidEffect.emissionRate = 15;
+        /* if (Input.GetButton("Brakes"))
+         {
+             bot.AddForce(transform.up * -speedForce / 2);
+             skidEffect.emissionRate = 15;
 
-        }
-        if (Input.GetButton("Boost"))
-        {
-            // car.AddForce(transform.up * speedForce);
-            speedForce = 10;
-            boostEffect.emissionRate = 25;
-        }
-        else
-        {
-            boostEffect.emissionRate = 0;
-            speedForce = 6;
-        }*/
+         }
+         if (Input.GetButton("Boost"))
+         {
+             // car.AddForce(transform.up * speedForce);
+             speedForce = 10;
+             boostEffect.emissionRate = 25;
+         }
+         else
+         {
+             boostEffect.emissionRate = 0;
+             speedForce = 6;
+         }*/
 
-       
+
 
 
         // always accelerate
@@ -196,8 +196,8 @@ public class MoveBot : MonoBehaviour
         //velocity += acceleration;
 
         // apply car movement
-       /* bot.velocity = transform.up * velocity;
-        bot.angularVelocity = 0.0f;*/
+        /* bot.velocity = transform.up * velocity;
+         bot.angularVelocity = 0.0f;*/
 
 
     }
@@ -212,22 +212,22 @@ public class MoveBot : MonoBehaviour
     }
     void SteerTowardsTarget()
     {
-       // Vector2 towardNextTrigger = direction - bot.transform.position;
+        // Vector2 towardNextTrigger = direction - bot.transform.position;
 
         float targetRot = Vector2.Angle(Vector2.right, direction);
-      /*  Debug.Log("bOT ANGLE  " + bot.transform.eulerAngles);
-        Debug.Log("DIR ANGLE  " + direction);*/
+        /*  Debug.Log("bOT ANGLE  " + bot.transform.eulerAngles);
+          Debug.Log("DIR ANGLE  " + direction);*/
         Debug.Log("ANGLE  " + targetRot);
-         if (direction.y < 0.0f)
-         {
-             targetRot = -targetRot;
-         }
+        if (direction.y < 0.0f)
+        {
+            targetRot = -targetRot;
+        }
         // float rot = Mathf.MoveTowardsAngle(bot.transform.localEulerAngles.z, targetRot, steering);
         //bot.transform.eulerAngles = new Vector3(0.0f, 0.0f, bot.transform.eulerAngles.z + targetRot);
 
-         bot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetRot -90 , 0.1f));
-       // bot.transform.up = new Vector3(Mathf.Lerp(bot.transform.up.x, direction.x, 0.5f), Mathf.Lerp(bot.transform.up.y, direction.y, 0.5f), Mathf.Lerp(bot.transform.up.z, direction.z, 0.5f));
-       
+        bot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetRot - 90, 0.1f));
+        // bot.transform.up = new Vector3(Mathf.Lerp(bot.transform.up.x, direction.x, 0.5f), Mathf.Lerp(bot.transform.up.y, direction.y, 0.5f), Mathf.Lerp(bot.transform.up.z, direction.z, 0.5f));
+
     }
 
     private void CheckDistance()
@@ -245,7 +245,7 @@ public class MoveBot : MonoBehaviour
             else
             {
                 currentNode++;
-                
+
                 /*target = Vector3.Lerp(nodes[currentNode].transform.position - nodes[currentNode].transform.up,
                               nodes[currentNode].transform.position + nodes[currentNode].transform.up,
                               Random.value);*/
@@ -255,12 +255,5 @@ public class MoveBot : MonoBehaviour
         }
 
     }
-
-
-
-
-
-
-
 
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CarLapCounter : MonoBehaviour {
 
-	public TrackLapTrigger first;
+	/*public TrackLapTrigger first;
 	public TextMesh textMesh;
 
 	TrackLapTrigger next;
@@ -38,6 +38,6 @@ public class CarLapCounter : MonoBehaviour {
 	void SetNextTrigger(TrackLapTrigger trigger) {
 		next = trigger.next;
 		SendMessage("OnNextTrigger", next, SendMessageOptions.DontRequireReceiver);
-	}
+	}*/
 }
 
