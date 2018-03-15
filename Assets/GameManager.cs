@@ -8,12 +8,14 @@ public class GameManager : MonoBehaviour {
     TextMesh textInfos;
     public AudioClip startSound;
     public GameObject CanvasGame;
+    private bool started;
 
 	void Start () {
         CanvasGame.SetActive(false);
         textInfos = GetComponent<TextMesh>();
         textInfos.text = "Press A to Start !";
         StopGame();
+        started = false;
 	}
 
     public void StopGame()
@@ -34,9 +36,10 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		
-        if(Input.GetButtonDown("Start"))
+        if(Input.GetButtonDown("Start") && !started)
         {
             StartCoroutine(Counter());
+            started = true;
         }
 	}
 

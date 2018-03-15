@@ -9,7 +9,7 @@ public class MoveBot2 : MonoBehaviour
     //public ParticleSystem exhaust;
     //public ParticleSystem skidEffect;
    // public ParticleSystem boostEffect;
-    public List<Transform> nodes;
+    public static List<Transform> nodes;
     float speedForce = 1f;
     float torqueForce = -200f;
     float driftFactorSticky = 0.5f;

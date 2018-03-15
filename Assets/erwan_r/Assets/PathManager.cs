@@ -10,7 +10,7 @@ public class PathManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = lineColor;
+       /* Gizmos.color = lineColor;
 
         Transform[] pathTransforms = GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -39,6 +39,6 @@ public class PathManager : MonoBehaviour
             Gizmos.DrawLine(previousNode, currentNode);
             Gizmos.DrawWireSphere(currentNode, 0.3f);
 
-        }
+        }*/
     }
 }

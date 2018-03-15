@@ -96,7 +96,8 @@ public class MoveBot : MonoBehaviour
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
     public List<Transform> nodes;
-    float speedForce = 7f;
+    private List<Transform> FindedNodes;
+    float speedForce = 6f;
     float torqueForce = -200f;
     float driftFactorSticky = 0.5f;
     float driftFactorSlippy = 0.7f;
@@ -104,11 +105,12 @@ public class MoveBot : MonoBehaviour
     float minStickyVelocity = 1.5f;
     float audioClipSpeed = 6f;
 
-    private int currentNode = 0;
+    private int currentNode = 7;
     float targetRot;
     AudioSource motorSound;
     Rigidbody2D bot;
     Vector3 direction;
+    private List<Node> nodeList = new List<Node> { };
 
 
 
@@ -120,6 +122,117 @@ public class MoveBot : MonoBehaviour
 
     void Start()
     {
+        bot = GetComponent<Rigidbody2D>();
+
+
+        Node localNode0 = new Node(nodes[0].name, 1);
+        localNode0.point = nodes[0];
+        localNode0.cout = 1;
+        nodeList.Add(localNode0);
+
+
+        Node localNode1 = new Node(nodes[1].name, 1);
+        localNode1.point = nodes[1];
+        localNode1.cout = 1;
+        nodeList.Add(localNode1);
+
+
+        Node localNode2 = new Node(nodes[2].name, 1);
+        localNode2.point = nodes[2];
+        localNode2.cout = 1;
+        nodeList.Add(localNode2);
+
+
+        Node localNode3 = new Node(nodes[3].name, 1);
+        localNode3.point = nodes[3];
+        localNode3.cout = 1;
+        nodeList.Add(localNode3);
+
+
+        Node localNode4 = new Node(nodes[4].name, 1);
+        localNode4.point = nodes[4];
+        localNode4.cout = 1;
+        nodeList.Add(localNode4);
+
+
+        Node localNode5 = new Node(nodes[5].name, 1);
+        localNode5.point = nodes[5];
+        localNode5.cout = 1;
+        localNode5.heuristique = 1;
+        nodeList.Add(localNode5);
+
+
+        Node localNode6 = new Node(nodes[6].name, 1);
+        localNode6.point = nodes[6];
+        localNode6.cout = 1;
+        nodeList.Add(localNode6);
+
+
+        Node localNode7 = new Node(nodes[7].name, 1);
+        localNode7.point = nodes[7];
+        localNode7.cout = 1;
+        nodeList.Add(localNode7);
+
+
+        Node localNode8 = new Node(nodes[8].name, 1);
+        localNode8.point = nodes[8];
+        localNode8.cout = 1;
+        nodeList.Add(localNode8);
+
+
+        Node localNode9 = new Node(nodes[9].name, 1);
+        localNode9.point = nodes[9];
+        localNode9.cout = 1;
+        nodeList.Add(localNode9);
+
+
+        Node localNode10 = new Node(nodes[10].name, 1);
+        localNode10.point = nodes[10];
+        localNode10.cout = 1;
+        nodeList.Add(localNode10);
+
+        Node localNode11 = new Node(nodes[11].name, 1);
+        localNode11.point = nodes[11];
+        localNode1.cout = 1;
+        nodeList.Add(localNode11);
+
+        Node localNode12 = new Node(nodes[12].name, 1);
+        localNode12.point = nodes[12];
+        localNode12.cout = 1;
+        nodeList.Add(localNode12);
+
+        Node localNode13 = new Node(nodes[13].name, 1);
+        localNode13.point = nodes[13];
+        localNode13.cout = 1;
+        nodeList.Add(localNode13);
+
+        Node localNode14 = new Node(nodes[14].name, 1);
+        localNode14.point = nodes[14];
+        localNode14.cout = 1;
+        nodeList.Add(localNode14);
+
+        localNode0.destinations = new Destination[] { new Destination(localNode1, 1) };
+        localNode1.destinations = new Destination[] { new Destination(localNode2, 1) };
+        localNode2.destinations = new Destination[] { new Destination(localNode3, 1) };
+        localNode3.destinations = new Destination[] { new Destination(localNode4, 1) };
+        localNode4.destinations = new Destination[] { new Destination(localNode5, 1) };
+        localNode5.destinations = new Destination[] { new Destination(localNode6, 1) };
+        localNode6.destinations = new Destination[] { new Destination(localNode7, 1) };
+        localNode7.destinations = new Destination[] { new Destination(localNode8, 1) };
+        localNode8.destinations = new Destination[] { new Destination(localNode9, 1) };
+        localNode9.destinations = new Destination[] { new Destination(localNode10, 1) };
+        localNode10.destinations = new Destination[] { new Destination(localNode11, 1) };
+        localNode11.destinations = new Destination[] { new Destination(localNode12, 1) };
+        localNode12.destinations = new Destination[] { new Destination(localNode13, 1) };
+        localNode13.destinations = new Destination[] { new Destination(localNode14, 1) };
+        localNode14.destinations = new Destination[] { new Destination(localNode0, 1) };
+
+        List<Node> close = new List<Node> { };
+        List<Node> open = new List<Node> { };
+        nodes = IaManager2.astar(nodeList[0], nodeList[14], new List<Node>(), new List<Node>());
+
+
+
         exhaust.emissionRate = 0;
         skidEffect.emissionRate = 0;
         boostEffect.emissionRate = 0;
@@ -138,6 +251,7 @@ public class MoveBot : MonoBehaviour
     void FixedUpdate()
     {
         float driftFactor = driftFactorSticky;
+
         float pitch = bot.velocity.magnitude / audioClipSpeed;
 
         CheckDistance();
@@ -153,10 +267,7 @@ public class MoveBot : MonoBehaviour
         bot.AddForce(direction.normalized * speedForce);
         exhaust.emissionRate = 15;
 
-        //ROTATE
-        //float targetRot = Vector2.Angle(bot.transform.up, direction);
-        //Debug.Log("ANGLE  " + targetRot);
-        //bot.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, targetRot, 0.05f));
+       
 
         //MOTOR SOUND
         motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
@@ -175,22 +286,26 @@ public class MoveBot : MonoBehaviour
              bot.AddForce(transform.up * -speedForce / 2);
              skidEffect.emissionRate = 15;
 
-         }
-         if (Input.GetButton("Boost"))
-         {
-             // car.AddForce(transform.up * speedForce);
-             speedForce = 10;
-             boostEffect.emissionRate = 25;
-         }
-         else
-         {
-             boostEffect.emissionRate = 0;
-             speedForce = 6;
          }*/
 
+        if (RightVelocity().magnitude > maxStickyVelocity)
+        {
+            driftFactor = driftFactorSlippy;
+            skidEffect.emissionRate = 15;
 
+        }
+        if (currentNode == 7 || currentNode == 5 || currentNode == 9 || currentNode == 8)
+        {
+            speedForce = 10;
+            //bot.AddForce(transform.up * speedForce);
+            boostEffect.emissionRate = 25;
+        }
+        else
+        {
+            boostEffect.emissionRate = 0;
+            speedForce = 6;
 
-
+        }
         // always accelerate
         float velocity = bot.velocity.magnitude;
         //velocity += acceleration;
@@ -212,48 +327,41 @@ public class MoveBot : MonoBehaviour
     }
     void SteerTowardsTarget()
     {
-        // Vector2 towardNextTrigger = direction - bot.transform.position;
 
         float targetRot = Vector2.Angle(Vector2.right, direction);
-        /*  Debug.Log("bOT ANGLE  " + bot.transform.eulerAngles);
-          Debug.Log("DIR ANGLE  " + direction);*/
-        Debug.Log("ANGLE  " + targetRot);
         if (direction.y < 0.0f)
         {
             targetRot = -targetRot;
         }
-        // float rot = Mathf.MoveTowardsAngle(bot.transform.localEulerAngles.z, targetRot, steering);
-        //bot.transform.eulerAngles = new Vector3(0.0f, 0.0f, bot.transform.eulerAngles.z + targetRot);
 
         bot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetRot - 90, 0.1f));
-        // bot.transform.up = new Vector3(Mathf.Lerp(bot.transform.up.x, direction.x, 0.5f), Mathf.Lerp(bot.transform.up.y, direction.y, 0.5f), Mathf.Lerp(bot.transform.up.z, direction.z, 0.5f));
 
     }
 
     private void CheckDistance()
     {
-        // Debug.Log(" DISTANCE " + Vector3.Distance(bot.transform.position, nodes[currentNode].position));
+        Debug.Log("CURRENT   " + currentNode);
+
         if (Vector3.Distance(bot.transform.position, nodes[currentNode].position) < 0.5f)
         {
+            speedForce = 2;
             if (currentNode == nodes.Count - 1)
             {
                 currentNode = 0;
-                /* target = Vector3.Lerp(nodes[currentNode].transform.position - nodes[currentNode].transform.up,
-                               nodes[currentNode].transform.position + nodes[currentNode].transform.up,
-                               Random.value);*/
             }
             else
             {
                 currentNode++;
-
-                /*target = Vector3.Lerp(nodes[currentNode].transform.position - nodes[currentNode].transform.up,
-                              nodes[currentNode].transform.position + nodes[currentNode].transform.up,
-                              Random.value);*/
-
-
             }
         }
 
     }
+
+
+
+
+
+
+
 
 }

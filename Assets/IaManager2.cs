@@ -132,7 +132,7 @@ public class IaManager2 : MonoBehaviour {
                     }
                     else
                     {
-                       
+                        result2.Reverse();
                         return result2;
                     }
                 }
@@ -213,6 +213,7 @@ public class IaManager2 : MonoBehaviour {
             }
             else
             {
+                result.Reverse();
                 return result;
             }
         }
