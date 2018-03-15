@@ -7,12 +7,13 @@ public class MoveCar : MonoBehaviour {
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
-    float speedForce = 6f;
+    float speedForce = 9f;
     float torqueForce = -200f;
-    float driftFactorSticky = 0.5f;
-    float driftFactorSlippy = 0.9f;
-    float maxStickyVelocity = 2.5f;
-    float minStickyVelocity = 1.5f;
+    float driftFactorSticky = 0.9f;
+    float driftFactorSlippy = 0.8f;
+    float maxStickyVelocity = 3.3f;
+    float minStickyVelocity = 1.6f;
+    //float audioClipSpeed = 6f;
     AudioSource motorSound;
     Rigidbody2D car;
     float audioClipSpeed = 6f;
@@ -69,13 +70,13 @@ public class MoveCar : MonoBehaviour {
         if (Input.GetButton("Boost"))
         {
            // car.AddForce(transform.up * speedForce);
-            speedForce = 10;
+            speedForce = 9;
             boostEffect.emissionRate = 25;
         }
         else
         {
             boostEffect.emissionRate = 0;
-            speedForce = 6;
+            speedForce = 7;
         }
 
 

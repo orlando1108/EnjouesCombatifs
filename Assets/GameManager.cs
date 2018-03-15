@@ -9,13 +9,15 @@ public class GameManager : MonoBehaviour {
     public AudioClip startSound;
     public GameObject CanvasGame;
     private bool started;
+    public static bool isBot;
 
 	void Start () {
         CanvasGame.SetActive(false);
         textInfos = GetComponent<TextMesh>();
-        textInfos.text = "Press A to Start !";
+        textInfos.text = "Press X to Start !";
         StopGame();
         started = false;
+      //  isBot = true;
 	}
 
     public void StopGame()
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour {
             GetComponent<AudioSource>().PlayOneShot(startSound);
         }
 
-        textInfos.text = "GO MANOLO !";
+        textInfos.text = "GO MANY !";
         StartGame();
         yield return new WaitForSeconds(1);
         textInfos.text = "";
