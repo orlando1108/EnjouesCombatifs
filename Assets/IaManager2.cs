@@ -22,6 +22,7 @@ public class Node
     public float heuristique;
     public Node parent;
     public Destination[] destinations;
+    public bool isActive;
 
     public Node(string n, float h)
     {
@@ -105,19 +106,13 @@ public class IaManager2 : MonoBehaviour {
 
         while (minOpen < minClose)
         {
-            Debug.Log("open count enter "+open.Count);
             if(open.Count == 0)
             {
                 List<Transform> result2 = new List<Transform> { endNode.point };
                 List<Node> endListNode2 = close.Where(x => x.name == endNode.name).ToList();
-                Debug.Log("end node name " + endNode.name);
-                foreach(Node tt in close)
-                {
-                    Debug.Log("Name close : "+tt.name);
-                }
-                Node finalNode2;
 
-                Debug.Log("toto " + endListNode2.Count );
+                Node finalNode2;
+                
                 if (endListNode2.Count == 1)
                 {
                     finalNode2 = endListNode2[0];
@@ -137,6 +132,7 @@ public class IaManager2 : MonoBehaviour {
                     }
                     else
                     {
+                       
                         return result2;
                     }
                 }
@@ -146,6 +142,11 @@ public class IaManager2 : MonoBehaviour {
             open.Remove(nodeToExplore);
 
             close.Add(nodeToExplore);
+            foreach(var tt in close)
+            {
+                Debug.Log("close"+tt.name);
+            }
+            
             if (nodeToExplore.name == endNode.name)
             {
                 continue;
@@ -169,11 +170,11 @@ public class IaManager2 : MonoBehaviour {
                 destArray[count] = newDest;
                 
                 var unique = open.Where(x => x.cout == newDest.node.cout && x.name == newDest.node.name && x.parent == newDest.node.parent);
-                Debug.Log("test " + newDest.node.name);
+                //Debug.Log("test " + newDest.node.name);
                 if (unique.Count() == 0)
                 {
                     open.Add(newDest.node);
-                    Debug.Log("open name" + newDest.node.name +" "+open.Count);
+                    //Debug.Log("open name" + newDest.node.name +" "+open.Count);
                 }
                 count++;
             }

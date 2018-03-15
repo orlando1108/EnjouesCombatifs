@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class MoveBot : MonoBehaviour
+public class MoveBot2 : MonoBehaviour
 {
     //public ParticleSystem exhaust;
     //public ParticleSystem skidEffect;
@@ -39,35 +39,30 @@ public class MoveBot : MonoBehaviour
         Node localNode0 = new Node(nodes[0].name, 1);
         localNode0.point = nodes[0];
         localNode0.cout = 1;
-        localNode0.heuristique = 1;
         nodeList.Add(localNode0);
 
 
         Node localNode1 = new Node(nodes[1].name, 1);
         localNode1.point = nodes[1];
         localNode1.cout = 1;
-        localNode1.heuristique = 1;
         nodeList.Add(localNode1);
 
 
         Node localNode2 = new Node(nodes[2].name, 1);
         localNode2.point = nodes[2];
         localNode2.cout = 1;
-        localNode2.heuristique = 1;
         nodeList.Add(localNode2);
 
 
         Node localNode3 = new Node(nodes[3].name, 1);
         localNode3.point = nodes[3];
         localNode3.cout = 1;
-        localNode3.heuristique = 1;
         nodeList.Add(localNode3);
 
 
         Node localNode4 = new Node(nodes[4].name, 1);
         localNode4.point = nodes[4];
         localNode4.cout = 1;
-        localNode4.heuristique = 1;
         nodeList.Add(localNode4);
 
 
@@ -81,32 +76,28 @@ public class MoveBot : MonoBehaviour
         Node localNode6 = new Node(nodes[6].name, 1);
         localNode6.point = nodes[6];
         localNode6.cout = 1;
-        localNode6.heuristique = 1;
         nodeList.Add(localNode6);
 
 
         Node localNode7 = new Node(nodes[7].name, 1);
         localNode7.point = nodes[7];
         localNode7.cout = 1;
-        localNode7.heuristique = 1;
         nodeList.Add(localNode7);
 
 
         Node localNode8 = new Node(nodes[8].name, 1);
         localNode8.point = nodes[8];
         localNode8.cout = 1;
-        localNode8.heuristique = 1;
         nodeList.Add(localNode8);
 
 
         Node localNode9 = new Node(nodes[9].name, 1);
         localNode9.point = nodes[9];
         localNode9.cout = 1;
-        localNode9.heuristique = 1;
         nodeList.Add(localNode9);
 
 
-        Node localNode10 = new Node(nodes[10].name, 2);
+        Node localNode10 = new Node(nodes[10].name, 1);
         localNode10.point = nodes[10];
         localNode10.cout = 1;
         nodeList.Add(localNode10);
@@ -118,26 +109,33 @@ public class MoveBot : MonoBehaviour
 
 
         
-        localNode0.destinations = new Destination[] { new Destination(localNode10, 1) };
-        localNode0.destinations = new Destination[] { new Destination(localNode11, 1) };
+        localNode0.destinations = new Destination[] { new Destination(localNode1, 1) };
+       /* localNode0.destinations = new Destination[] { new Destination(localNode11, 1) };
 
 
-        localNode10.destinations = new Destination[] { new Destination(localNode1, 1) };
-        localNode11.destinations = new Destination[] { new Destination(localNode1, 1) };
+        localNode10.destinations = new Destination[] { new Destination(localNode9, 1) };
+        localNode11.destinations = new Destination[] { new Destination(localNode9, 1) };*/
 
 
         localNode1.destinations = new Destination[] { new Destination(localNode2, 1) };
         localNode2.destinations = new Destination[] { new Destination(localNode3, 1) };
         localNode3.destinations = new Destination[] { new Destination(localNode4, 1) };
-        localNode4.destinations = new Destination[] { new Destination(localNode5, 1) };
-        localNode5.destinations = new Destination[] { new Destination(localNode6, 1) };
+
+        localNode4.destinations = new Destination[] { new Destination(localNode5, 2), new Destination(localNode6, 3) };
+        //localNode4.destinations = new Destination[] { new Destination(localNode6, 1) };
+
+        localNode5.destinations = new Destination[] { new Destination(localNode7, 1) };
         localNode6.destinations = new Destination[] { new Destination(localNode7, 1) };
         localNode7.destinations = new Destination[] { new Destination(localNode8, 1) };
         localNode8.destinations = new Destination[] { new Destination(localNode9, 1) };
+        localNode9.destinations = new Destination[] { new Destination(localNode10, 1) };
+        localNode10.destinations = new Destination[] { new Destination(localNode11, 1) };
+        localNode11.destinations = new Destination[] { new Destination(localNode0, 1) };
 
         List<Node> close = new List<Node> { };
         List<Node> open = new List<Node> { };
-        nodes = IaManager2.astar(nodeList[0], nodeList[9], new List<Node>(), new List<Node>());
+        nodes = IaManager2.astar(nodeList[10], nodeList[9], new List<Node>(), new List<Node>());
+
         
 
     }
@@ -231,7 +229,7 @@ public class MoveBot : MonoBehaviour
     {
        // Vector2 towardNextTrigger = target - bot.transform.position;
         float targetRot = Vector2.Angle(bot.transform.up, direction);
-        Debug.Log("ROT  " + targetRot);
+        //Debug.Log("ROT  " + targetRot);
 
 
          /*if (direction.y < 0.0f)
