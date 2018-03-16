@@ -103,16 +103,17 @@ public class IaManager2 : MonoBehaviour {
         {
             minClose = minOpen + 1;
         }
-
-        while (minOpen < minClose)
+        int count2 = 0;
+        while (minOpen < minClose && count2 < 100)
         {
-            if(open.Count == 0)
+            count2++;
+            if (open.Count == 0)
             {
                 List<Transform> result2 = new List<Transform> { endNode.point };
                 List<Node> endListNode2 = close.Where(x => x.name == endNode.name).ToList();
 
                 Node finalNode2;
-                
+
                 if (endListNode2.Count == 1)
                 {
                     finalNode2 = endListNode2[0];
@@ -142,11 +143,7 @@ public class IaManager2 : MonoBehaviour {
             open.Remove(nodeToExplore);
 
             close.Add(nodeToExplore);
-            foreach(var tt in close)
-            {
-                Debug.Log("close"+tt.name);
-            }
-            
+           
             if (nodeToExplore.name == endNode.name)
             {
                 continue;
@@ -159,23 +156,36 @@ public class IaManager2 : MonoBehaviour {
             int count = 0;
             foreach (Destination myDest in nodeToExplore.destinations)
             {
+                if (!myDest.node.isActive)
+                {
+                    continue;
+                }
                 Destination newDest = myDest;
                 newDest.node = new Node(newDest.node.name, newDest.node.heuristique);
+
                 newDest.node.cout = myDest.distance + nodeToExplore.cout;
                 newDest.node.destinations = myDest.node.destinations;
                 newDest.node.point = myDest.node.point;
 
+
                 newDest.node.parent = nodeToExplore;
 
                 destArray[count] = newDest;
-                
-                var unique = open.Where(x => x.cout == newDest.node.cout && x.name == newDest.node.name && x.parent == newDest.node.parent);
-                //Debug.Log("test " + newDest.node.name);
-                if (unique.Count() == 0)
+
+                var unique = open.FirstOrDefault(x => x.name == newDest.node.name);
+                if (unique != null)
+                {
+                    if (unique.cout + unique.heuristique > newDest.node.cout + newDest.node.heuristique)
+                    {
+                        open.Remove(unique);
+                        open.Add(newDest.node);
+                    }
+                }
+                if (unique == null)
                 {
                     open.Add(newDest.node);
-                    //Debug.Log("open name" + newDest.node.name +" "+open.Count);
                 }
+
                 count++;
             }
             nodeToExplore.destinations = destArray;

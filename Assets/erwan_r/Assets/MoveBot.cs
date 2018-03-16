@@ -18,7 +18,7 @@ public class MoveBot : MonoBehaviour
     float minStickyVelocity;
     float audioClipSpeed;
 
-    private int currentNode = 7;
+    private int currentNode = 0;
     float targetRot;
     AudioSource motorSound;
     Rigidbody2D bot;
@@ -49,117 +49,240 @@ public class MoveBot : MonoBehaviour
             audioClipSpeed = 6f;
             direction = (nodes[currentNode].position - bot.transform.position);
 
-            Node localNode0 = new Node(nodes[0].name, 1);
-            localNode0.point = nodes[0];
-            localNode0.cout = 1;
-            nodeList.Add(localNode0);
+            Node localNode1a = new Node(nodes[0].name, 1);
+            localNode1a.point = nodes[0];
+            localNode1a.isActive = true;
+            localNode1a.cout = 1;
+            nodeList.Add(localNode1a);
+
+            Node localNode1b = new Node(nodes[1].name, 1);
+            localNode1b.point = nodes[1];
+            localNode1b.isActive = true;
+            localNode1b.cout = 1;
+            nodeList.Add(localNode1b);
+
+            Node localNode2a = new Node(nodes[2].name, 1);
+            localNode2a.point = nodes[2];
+            localNode2a.isActive = true;
+            localNode2a.cout = 1;
+            nodeList.Add(localNode2a);
+
+            Node localNode2b = new Node(nodes[3].name, 1);
+            localNode2b.point = nodes[3];
+            localNode2b.isActive = true;
+            localNode2b.cout = 1;
+            nodeList.Add(localNode2b);
+
+            Node localNode3a = new Node(nodes[4].name, 1);
+            localNode3a.point = nodes[4];
+            localNode3a.cout = 1;
+            localNode3a.isActive = true;
+            nodeList.Add(localNode3a);
+
+            Node localNode3b = new Node(nodes[5].name, 1);
+            localNode3b.point = nodes[5];
+            localNode3b.cout = 1;
+            localNode3b.isActive = true;
+            localNode3b.heuristique = 1;
+            nodeList.Add(localNode3b);
+
+            Node localNode4a = new Node(nodes[6].name, 1);
+            localNode4a.point = nodes[6];
+            localNode4a.cout = 1;
+            localNode4a.isActive = true;
+            nodeList.Add(localNode4a);
+
+            Node localNode4b = new Node(nodes[7].name, 1);
+            localNode4b.point = nodes[7];
+            localNode4b.isActive = true;
+            localNode4b.cout = 1;
+            nodeList.Add(localNode4b);
+
+            Node localNode5a = new Node(nodes[8].name, 1);
+            localNode5a.point = nodes[8];
+            localNode5a.isActive = true;
+            localNode5a.cout = 1;
+            nodeList.Add(localNode5a);
+
+            Node localNode5b = new Node(nodes[9].name, 1);
+            localNode5b.point = nodes[9];
+            localNode5b.isActive = true;
+            localNode5b.cout = 1;
+            nodeList.Add(localNode5b);
+
+            Node localNode6a = new Node(nodes[10].name, 1);
+            localNode6a.point = nodes[10];
+            localNode6a.isActive = true;
+            localNode6a.cout = 1;
+            nodeList.Add(localNode6a);
+
+            Node localNode6b = new Node(nodes[11].name, 1);
+            localNode6b.point = nodes[11];
+            localNode6b.isActive = true;
+            localNode6b.cout = 1;
+            nodeList.Add(localNode6b);
+
+            Node localNode7a = new Node(nodes[12].name, 1);
+            localNode7a.point = nodes[12];
+            localNode7a.isActive = true;
+            localNode7a.cout = 1;
+            nodeList.Add(localNode7a);
+
+            Node localNode7b = new Node(nodes[13].name, 1);
+            localNode7b.point = nodes[13];
+            localNode7b.isActive = true;
+            localNode7b.cout = 1;
+            nodeList.Add(localNode7b);
+
+            Node localNode8a = new Node(nodes[14].name, 1);
+            localNode8a.point = nodes[14];
+            localNode8a.isActive = true;
+            localNode8a.cout = 1;
+            nodeList.Add(localNode8a);
+
+            Node localNode8b = new Node(nodes[15].name, 1);
+            localNode8b.point = nodes[15];
+            localNode8b.isActive = true;
+            localNode8b.cout = 1;
+            nodeList.Add(localNode8b);
+
+            Node localNode9a = new Node(nodes[16].name, 1);
+            localNode9a.point = nodes[16];
+            localNode9a.isActive = true;
+            localNode9a.cout = 1;
+            nodeList.Add(localNode9a);
+
+            Node localNode9b = new Node(nodes[17].name, 1);
+            localNode9b.point = nodes[17];
+            localNode9b.isActive = true;
+            localNode9b.cout = 1;
+            nodeList.Add(localNode9b);
+
+            Node localNode10a = new Node(nodes[18].name, 1);
+            localNode10a.point = nodes[18];
+            localNode10a.isActive = true;
+            localNode10a.cout = 1;
+            nodeList.Add(localNode10a);
+
+            Node localNode10b = new Node(nodes[19].name, 1);
+            localNode10b.point = nodes[19];
+            localNode10b.isActive = true;
+            localNode10b.cout = 1;
+            nodeList.Add(localNode10b);
+
+            Node localNode11a = new Node(nodes[20].name, 1);
+            localNode11a.point = nodes[20];
+            localNode11a.isActive = true;
+            localNode11a.cout = 1;
+            nodeList.Add(localNode11a);
+
+            Node localNode11b = new Node(nodes[21].name, 1);
+            localNode11b.point = nodes[21];
+            localNode11b.isActive = true;
+            localNode11b.cout = 1;
+            nodeList.Add(localNode11b);
+
+            Node localNode12a = new Node(nodes[22].name, 1);
+            localNode12a.point = nodes[22];
+            localNode12a.isActive = true;
+            localNode12a.cout = 1;
+            nodeList.Add(localNode12a);
+
+            Node localNode12b = new Node(nodes[23].name, 1);
+            localNode12b.point = nodes[23];
+            localNode12b.isActive = true;
+            localNode12b.cout = 1;
+            nodeList.Add(localNode12b);
+
+            Node localNode13a = new Node(nodes[24].name, 1);
+            localNode13a.point = nodes[24];
+            localNode13a.isActive = true;
+            localNode13a.cout = 1;
+            nodeList.Add(localNode13a);
+
+            Node localNode13b = new Node(nodes[25].name, 1);
+            localNode13b.point = nodes[25];
+            localNode13b.isActive = true;
+            localNode13b.cout = 1;
+            nodeList.Add(localNode13b);
+
+            Node localNode14a = new Node(nodes[26].name, 1);
+            localNode14a.point = nodes[26];
+            localNode14a.isActive = true;
+            localNode14a.cout = 1;
+            nodeList.Add(localNode14a);
+
+            Node localNode14b = new Node(nodes[27].name, 1);
+            localNode14b.point = nodes[27];
+            localNode14b.isActive = true;
+            localNode14b.cout = 1;
+            nodeList.Add(localNode14b);
+
+            Node localNode15a = new Node(nodes[28].name, 1);
+            localNode15a.point = nodes[28];
+            localNode15a.isActive = true;
+            localNode15a.cout = 1;
+            nodeList.Add(localNode15a);
+
+            Node localNode15b = new Node(nodes[29].name, 1);
+            localNode15b.point = nodes[29];
+            localNode15b.isActive = true;
+            localNode15b.cout = 1;
+            nodeList.Add(localNode15b);
 
 
-            Node localNode1 = new Node(nodes[1].name, 1);
-            localNode1.point = nodes[1];
-            localNode1.cout = 1;
-            nodeList.Add(localNode1);
+            localNode1a.destinations = new Destination[] { new Destination(localNode2a, 2), new Destination(localNode2b, 1) };
+            localNode1b.destinations = new Destination[] { new Destination(localNode2a, 2), new Destination(localNode2b, 1) };
 
+            localNode2a.destinations = new Destination[] { new Destination(localNode3a, 2), new Destination(localNode3b, 1) };
+            localNode2b.destinations = new Destination[] { new Destination(localNode3a, 2), new Destination(localNode3b, 1) };
 
-            Node localNode2 = new Node(nodes[2].name, 1);
-            localNode2.point = nodes[2];
-            localNode2.cout = 1;
-            nodeList.Add(localNode2);
+            localNode3a.destinations = new Destination[] { new Destination(localNode4a, 2), new Destination(localNode4b, 1) };
+            localNode3b.destinations = new Destination[] { new Destination(localNode4a, 2), new Destination(localNode4b, 1) };
 
+            localNode4a.destinations = new Destination[] { new Destination(localNode5a, 2), new Destination(localNode5b, 1) };
+            localNode4b.destinations = new Destination[] { new Destination(localNode5a, 2), new Destination(localNode5b, 1) };
 
-            Node localNode3 = new Node(nodes[3].name, 1);
-            localNode3.point = nodes[3];
-            localNode3.cout = 1;
-            nodeList.Add(localNode3);
+            localNode5a.destinations = new Destination[] { new Destination(localNode6a, 1), new Destination(localNode6b, 2) };
+            localNode5b.destinations = new Destination[] { new Destination(localNode6a, 1), new Destination(localNode6b, 2) };
 
+            localNode6a.destinations = new Destination[] { new Destination(localNode7a, 1), new Destination(localNode7b, 2) };
+            localNode6b.destinations = new Destination[] { new Destination(localNode7a, 1), new Destination(localNode7b, 2) };
 
-            Node localNode4 = new Node(nodes[4].name, 1);
-            localNode4.point = nodes[4];
-            localNode4.cout = 1;
-            nodeList.Add(localNode4);
+            localNode7a.destinations = new Destination[] { new Destination(localNode8a, 2), new Destination(localNode8b, 1) };
+            localNode7b.destinations = new Destination[] { new Destination(localNode8a, 2), new Destination(localNode8b, 1) };
 
+            localNode8a.destinations = new Destination[] { new Destination(localNode9a, 2), new Destination(localNode9b, 1) };
+            localNode8b.destinations = new Destination[] { new Destination(localNode9a, 2), new Destination(localNode9b, 1) };
 
-            Node localNode5 = new Node(nodes[5].name, 1);
-            localNode5.point = nodes[5];
-            localNode5.cout = 1;
-            localNode5.heuristique = 1;
-            nodeList.Add(localNode5);
+            localNode9a.destinations = new Destination[] { new Destination(localNode10a, 2), new Destination(localNode10b, 1) };
+            localNode9b.destinations = new Destination[] { new Destination(localNode10a, 2), new Destination(localNode10b, 1) };
 
+            localNode10a.destinations = new Destination[] { new Destination(localNode11a, 2), new Destination(localNode11b, 1) };
+            localNode10b.destinations = new Destination[] { new Destination(localNode11a, 2), new Destination(localNode11b, 1) };
 
-            Node localNode6 = new Node(nodes[6].name, 1);
-            localNode6.point = nodes[6];
-            localNode6.cout = 1;
-            nodeList.Add(localNode6);
+            localNode11a.destinations = new Destination[] { new Destination(localNode12a, 2), new Destination(localNode12b, 1) };
+            localNode11b.destinations = new Destination[] { new Destination(localNode12a, 2), new Destination(localNode12b, 1) };
 
+            localNode12a.destinations = new Destination[] { new Destination(localNode13a, 1), new Destination(localNode13b, 2) };
+            localNode12b.destinations = new Destination[] { new Destination(localNode13a, 1), new Destination(localNode13b, 2) };
 
-            Node localNode7 = new Node(nodes[7].name, 1);
-            localNode7.point = nodes[7];
-            localNode7.cout = 1;
-            nodeList.Add(localNode7);
+            localNode13a.destinations = new Destination[] { new Destination(localNode14a, 1), new Destination(localNode14b, 2) };
+            localNode13b.destinations = new Destination[] { new Destination(localNode14a, 1), new Destination(localNode14b, 2) };
 
-             
-            Node localNode8 = new Node(nodes[8].name, 2);
-            localNode8.point = nodes[8];
-            localNode8.cout = 1;
-            nodeList.Add(localNode8);
+            localNode14a.destinations = new Destination[] { new Destination(localNode15a, 2), new Destination(localNode15b, 1) };
+            localNode14b.destinations = new Destination[] { new Destination(localNode15a, 2), new Destination(localNode15b, 1) };
 
-
-            Node localNode9 = new Node(nodes[9].name, 1);
-            localNode9.point = nodes[9];
-            localNode9.cout = 1;
-            nodeList.Add(localNode9);
-
-
-            Node localNode10 = new Node(nodes[10].name, 1);
-            localNode10.point = nodes[10];
-            localNode10.cout = 1;
-            nodeList.Add(localNode10);
-
-            Node localNode11 = new Node(nodes[11].name, 1);
-            localNode11.point = nodes[11];
-            localNode1.cout = 1;
-            nodeList.Add(localNode11);
-
-            Node localNode12 = new Node(nodes[12].name, 1);
-            localNode12.point = nodes[12];
-            localNode12.cout = 1;
-            nodeList.Add(localNode12);
-
-            Node localNode13 = new Node(nodes[13].name, 1);
-            localNode13.point = nodes[13];
-            localNode13.cout = 1;
-            nodeList.Add(localNode13);
-
-            Node localNode14 = new Node(nodes[14].name, 1);
-            localNode14.point = nodes[14];
-            localNode14.cout = 1;
-            nodeList.Add(localNode14);
-
-            Node localNode15 = new Node(nodes[15].name, 1);
-            localNode15.point = nodes[15];
-            localNode15.cout = 1;
-            nodeList.Add(localNode15);
-
-            localNode0.destinations = new Destination[] { new Destination(localNode1, 1) };
-            localNode1.destinations = new Destination[] { new Destination(localNode2, 1) };
-            localNode2.destinations = new Destination[] { new Destination(localNode3, 1) };
-            localNode3.destinations = new Destination[] { new Destination(localNode4, 1) };
-            localNode4.destinations = new Destination[] { new Destination(localNode5, 1) };
-            localNode5.destinations = new Destination[] { new Destination(localNode6, 1) };
-            localNode6.destinations = new Destination[] { new Destination(localNode8, 1), new Destination(localNode7, 1) };
-            localNode7.destinations = new Destination[] { new Destination(localNode8, 1) };
-            localNode8.destinations = new Destination[] { new Destination(localNode9, 1) };
-            localNode9.destinations = new Destination[] { new Destination(localNode10, 1), };
-            localNode10.destinations = new Destination[] { new Destination(localNode11, 1) };
-            localNode11.destinations = new Destination[] { new Destination(localNode12, 1) };
-            localNode12.destinations = new Destination[] { new Destination(localNode13, 1) };
-            localNode13.destinations = new Destination[] { new Destination(localNode14, 1) };
-            localNode14.destinations = new Destination[] { new Destination(localNode15, 1) };
-            localNode15.destinations = new Destination[] { new Destination(localNode0, 1) };
+            localNode15a.destinations = new Destination[] { new Destination(localNode1a, 1), new Destination(localNode1b, 2) };
+            localNode15b.destinations = new Destination[] { new Destination(localNode1a, 1), new Destination(localNode1b, 2) };
 
             List<Node> close = new List<Node> { };
             List<Node> open = new List<Node> { };
-            nodes = IaManager2.astar(nodeList[0], nodeList[15], new List<Node>(), new List<Node>());
+            randomObstacles(nodeList);
+            generateObstacles();
+            nodes = IaManager2.astar(nodeList[0], nodeList[29], new List<Node>(), new List<Node>());
+
+
 
         }
         else
@@ -214,7 +337,7 @@ public class MoveBot : MonoBehaviour
                 skidEffect.emissionRate = 15;
 
             }
-            if (currentNode == 7 || currentNode == 5 || currentNode == 9 || currentNode == 8)
+            if (currentNode == 0 || currentNode == 14 || currentNode == 9 || currentNode == 8)
             {
                 speedForce = 12;
                 //bot.AddForce(transform.up * speedForce);
@@ -324,6 +447,47 @@ public class MoveBot : MonoBehaviour
                 currentNode++;
             }
         }
+
+    }
+
+    private List<Node> randomObstacles(List<Node> entry)
+    {
+        System.Random rnd = new System.Random();
+        int rand1 = rnd.Next(1, 30);
+        int rand2 = rnd.Next(1, 30);
+       // int rand3 = rnd.Next(1, 30);
+        while (rand1 - rand2 < 3 && rand1 - rand2 > -3)
+        {
+            rand2 = rnd.Next(1, 30);
+        }
+
+        entry[rand1].isActive = false;
+        
+
+
+        entry[rand2].isActive = false;
+        return entry;
+    }
+
+    private void generateObstacles()
+    {
+        foreach(Node point in nodeList.FindAll(elem => elem.isActive == false)){
+            GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            sphere.transform.position = point.point.position;
+
+           
+           /* SphereCollider sphereCollider = sphere.AddComponent<SphereCollider>();
+            //circleCollider.transform.position = point.point.position;
+            sphereCollider.radius = 0.5f;*/
+
+           
+        }
+        foreach (Node point in nodeList.FindAll(elem => elem.isActive == true))
+        {
+            point.point.GetComponent<CircleCollider2D>().isTrigger = true;
+        }
+            
+
 
     }
 
