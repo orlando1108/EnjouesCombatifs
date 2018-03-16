@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public AudioClip startSound;
     public GameObject CanvasGame;
     private bool started;
-    public static bool isBot;
+    public static bool isBot = true;
 
 	void Start () {
         CanvasGame.SetActive(false);
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour {
 
     private IEnumerator Counter()
     {
-        textInfos.GetComponent<Animator>().enabled = false;
+        textInfos.GetComponent<Animator>().enabled = true;
         textInfos.GetComponent<MeshRenderer>().enabled = true;
 
         for(int i =3; i>=0; i--)

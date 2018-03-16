@@ -4,106 +4,19 @@ using UnityEngine;
 
 public class MoveBot : MonoBehaviour
 {
-
-    /* public KeyCode turnRight;
-     public KeyCode turnLeft;
-     public KeyCode bracking;
-
-     private float rotationSpeed;
-     private Vector3 originalRotation;
-     private SpriteRenderer spRenderer;
-     private Vector3 toVector;
-     private bool hasRightSkided;
-     private bool hasLeftSkided;
-
-     private float skidAngle;
-
-     private float difAngle;
-
-     private Vector3 targetAngle;*/
-
-
-    /*
-      // Use this for initialization
-      void Start()
-      {
-          spRenderer = GetComponent<SpriteRenderer>();
-          rotationSpeed = 2.5f;
-          hasRightSkided = false;
-          hasLeftSkided = false;
-          skidAngle = 0f;
-          difAngle = 0f;
-
-  }
-
-  // Update is called once per frame
-  void Update () {
-
-          print("angle car   " + transform.rotation.z+ "  parent " + transform.parent.rotation.z);
-          print(" skid left  " + hasLeftSkided);
-          print(" skid right  " + hasRightSkided);
-          bool isBraked = Input.GetKey(bracking);
-          bool isTurnedRight = Input.GetKey(turnRight);
-          bool isTurnedLeft = Input.GetKey(turnLeft);
-
-
-
-          if (isTurnedRight && isBraked)
-          {
-              //transform.Rotate(Vector3.back * rotationSpeed);
-              transform.localEulerAngles += Vector3.back * rotationSpeed;
-               hasRightSkided = true;
-
-          }
-          if (isTurnedLeft && isBraked)
-          {
-              //transform.Rotate(Vector3.forward * rotationSpeed);
-              transform.localEulerAngles += Vector3.forward * rotationSpeed;
-              hasLeftSkided = true;
-          }
-
-          if (hasRightSkided)
-          {
-
-              if (Vector3.Distance(transform.eulerAngles, transform.localEulerAngles) > 0.01f)
-              {
-                  transform.localEulerAngles = new Vector3( 0,0, Mathf.LerpAngle(transform.localEulerAngles.z, 0, 0.1f));
-
-              }
-              else
-              {
-                  transform.eulerAngles = targetAngle;
-                  hasRightSkided = false;
-              }
-          }
-          if (hasLeftSkided)
-          {
-              if (Vector3.Distance(transform.eulerAngles, transform.localEulerAngles) > 0.01f)
-              {
-                  transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, 0, 0.01f));
-              }
-              else
-              {
-                  transform.eulerAngles = targetAngle;
-                  hasLeftSkided = false;
-              }
-
-          }
-
-
-      }*/
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
+    public ParticleSystem sparkEffect;
     public List<Transform> nodes;
     private List<Transform> FindedNodes;
-    float speedForce = 9f;
-    float torqueForce = -200f;
-    float driftFactorSticky = 1.2f;
-    float driftFactorSlippy = 0.8f;
-    float maxStickyVelocity = 3.3f;
-    float minStickyVelocity = 1.6f;
-    float audioClipSpeed = 6f;
+    float speedForce;
+    float torqueForce;
+    float driftFactorSticky;
+    float driftFactorSlippy ;
+    float maxStickyVelocity;
+    float minStickyVelocity;
+    float audioClipSpeed;
 
     private int currentNode = 7;
     float targetRot;
@@ -123,9 +36,19 @@ public class MoveBot : MonoBehaviour
     void Start()
     {
         bot = GetComponent<Rigidbody2D>();
+        sparkEffect.enableEmission = false;
 
         if (GameManager.isBot)
         {
+            speedForce = 9f;
+            torqueForce = -200f;
+            driftFactorSticky = 1.9f;
+            driftFactorSlippy = 0.8f;
+            maxStickyVelocity = 3f;
+            minStickyVelocity = 1.3f;
+            audioClipSpeed = 6f;
+            direction = (nodes[currentNode].position - bot.transform.position);
+
             Node localNode0 = new Node(nodes[0].name, 1);
             localNode0.point = nodes[0];
             localNode0.cout = 1;
@@ -174,8 +97,8 @@ public class MoveBot : MonoBehaviour
             localNode7.cout = 1;
             nodeList.Add(localNode7);
 
-
-            Node localNode8 = new Node(nodes[8].name, 1);
+             
+            Node localNode8 = new Node(nodes[8].name, 2);
             localNode8.point = nodes[8];
             localNode8.cout = 1;
             nodeList.Add(localNode8);
@@ -212,26 +135,41 @@ public class MoveBot : MonoBehaviour
             localNode14.cout = 1;
             nodeList.Add(localNode14);
 
+            Node localNode15 = new Node(nodes[15].name, 1);
+            localNode15.point = nodes[15];
+            localNode15.cout = 1;
+            nodeList.Add(localNode15);
+
             localNode0.destinations = new Destination[] { new Destination(localNode1, 1) };
             localNode1.destinations = new Destination[] { new Destination(localNode2, 1) };
             localNode2.destinations = new Destination[] { new Destination(localNode3, 1) };
             localNode3.destinations = new Destination[] { new Destination(localNode4, 1) };
             localNode4.destinations = new Destination[] { new Destination(localNode5, 1) };
             localNode5.destinations = new Destination[] { new Destination(localNode6, 1) };
-            localNode6.destinations = new Destination[] { new Destination(localNode7, 1) };
+            localNode6.destinations = new Destination[] { new Destination(localNode8, 1), new Destination(localNode7, 1) };
             localNode7.destinations = new Destination[] { new Destination(localNode8, 1) };
             localNode8.destinations = new Destination[] { new Destination(localNode9, 1) };
-            localNode9.destinations = new Destination[] { new Destination(localNode10, 1) };
+            localNode9.destinations = new Destination[] { new Destination(localNode10, 1), };
             localNode10.destinations = new Destination[] { new Destination(localNode11, 1) };
             localNode11.destinations = new Destination[] { new Destination(localNode12, 1) };
             localNode12.destinations = new Destination[] { new Destination(localNode13, 1) };
             localNode13.destinations = new Destination[] { new Destination(localNode14, 1) };
-            localNode14.destinations = new Destination[] { new Destination(localNode0, 1) };
+            localNode14.destinations = new Destination[] { new Destination(localNode15, 1) };
+            localNode15.destinations = new Destination[] { new Destination(localNode0, 1) };
 
             List<Node> close = new List<Node> { };
             List<Node> open = new List<Node> { };
-            nodes = IaManager2.astar(nodeList[0], nodeList[14], new List<Node>(), new List<Node>());
+            nodes = IaManager2.astar(nodeList[0], nodeList[15], new List<Node>(), new List<Node>());
 
+        }
+        else
+        {
+            speedForce = 9f;
+            torqueForce = -200f;
+            driftFactorSticky = 0.9f;
+            driftFactorSlippy = 0.8f;
+            maxStickyVelocity = 3.3f;
+            minStickyVelocity = 1.6f;
         }
 
         exhaust.emissionRate = 0;
@@ -240,7 +178,7 @@ public class MoveBot : MonoBehaviour
         motorSound = GetComponent<AudioSource>();
         motorSound.Play();
         //bot = GetComponent<Rigidbody2D>();
-        direction = (nodes[currentNode].position - bot.transform.position);
+        
         //bot.transform.position = new Vector2(nodes[currentNode].position.x, nodes[currentNode].position.y);
 
     }
@@ -267,9 +205,7 @@ public class MoveBot : MonoBehaviour
             direction = (nodes[currentNode].position - bot.transform.position);
             bot.AddForce(direction.normalized * speedForce);
             exhaust.emissionRate = 15;
-
-
-
+            
             //MOTOR SOUND
             motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
             if (RightVelocity().magnitude > maxStickyVelocity)
@@ -280,7 +216,7 @@ public class MoveBot : MonoBehaviour
             }
             if (currentNode == 7 || currentNode == 5 || currentNode == 9 || currentNode == 8)
             {
-                speedForce = 13;
+                speedForce = 12;
                 //bot.AddForce(transform.up * speedForce);
                 boostEffect.emissionRate = 25;
             }
@@ -303,7 +239,7 @@ public class MoveBot : MonoBehaviour
             float pitch = bot.velocity.magnitude / audioClipSpeed;
             skidEffect.emissionRate = 0;
             exhaust.emissionRate = 2;
-
+             
 
             motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
 
@@ -332,13 +268,13 @@ public class MoveBot : MonoBehaviour
             if (Input.GetButton("Boost2"))
             {
                 // car.AddForce(transform.up * speedForce);
-                speedForce = 9;
+                speedForce = 12;
                 boostEffect.emissionRate = 25;
             }
             else
             {
                 boostEffect.emissionRate = 0;
-                speedForce = 7;
+                speedForce = 9;
             }
             
             float tf = Mathf.Lerp(0, torqueForce, bot.velocity.magnitude / 5);
@@ -360,14 +296,15 @@ public class MoveBot : MonoBehaviour
     }
     void SteerTowardsTarget()
     {
+    
+         float targetRot = Vector2.Angle(Vector2.right, direction);
+         if (direction.y < 0.0f)
+         {
+             targetRot = -targetRot;
+         }
 
-        float targetRot = Vector2.Angle(Vector2.right, direction);
-        if (direction.y < 0.0f)
-        {
-            targetRot = -targetRot;
-        }
-
-        bot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetRot - 90, 0.1f));
+         bot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetRot - 90, 0.2f));
+       // bot.transform.up = new Vector3(0, 0, Mathf.LerpAngle(bot.transform.localEulerAngles.z, direction.z, 0.1f)-90);;
 
     }
 

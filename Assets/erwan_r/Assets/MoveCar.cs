@@ -7,9 +7,10 @@ public class MoveCar : MonoBehaviour {
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
+    public ParticleSystem sparkEffect;
     float speedForce = 9f;
     float torqueForce = -200f;
-    float driftFactorSticky = 0.9f;
+    float driftFactorSticky = 2f;
     float driftFactorSlippy = 0.8f;
     float maxStickyVelocity = 3.3f;
     float minStickyVelocity = 1.6f;
@@ -21,9 +22,11 @@ public class MoveCar : MonoBehaviour {
     
     void Start()
     {
+       // this.GetComponent<ParticleSystem>().enableEmission = false;
         exhaust.emissionRate = 0;
         skidEffect.emissionRate = 0;
         boostEffect.emissionRate = 0;
+        sparkEffect.enableEmission = false;
         motorSound = GetComponent<AudioSource>();
         motorSound.Play();
         car = GetComponent<Rigidbody2D>();
@@ -70,13 +73,13 @@ public class MoveCar : MonoBehaviour {
         if (Input.GetButton("Boost"))
         {
            // car.AddForce(transform.up * speedForce);
-            speedForce = 9;
+            speedForce = 12;
             boostEffect.emissionRate = 25;
         }
         else
         {
             boostEffect.emissionRate = 0;
-            speedForce = 7;
+            speedForce = 9;
         }
 
 
@@ -96,10 +99,5 @@ public class MoveCar : MonoBehaviour {
     {
         return transform.right * Vector2.Dot(GetComponent<Rigidbody2D>().velocity, transform.right);
     }
-   /* Vector2 LeftVelocity()
-    {
-        return transform.right * Vector2.Dot(GetComponent<Rigidbody2D>().velocity, transform.right);
-    }*/
-
 
 }
