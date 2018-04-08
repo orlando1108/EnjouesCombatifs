@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CollisionEvent : MonoBehaviour {
 
-     public SparkPool pool;
+     private SparkPool pool;
      private GameObject particleObject;
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -13,7 +13,7 @@ public class CollisionEvent : MonoBehaviour {
         Rigidbody2D car = this.GetComponent<Rigidbody2D>();
         //  ParticleSystem sparkEffect = this.GetComponent<ParticleSystem>();
 
-        particleObject = pool.Instantiate(contact.point);
+        particleObject = pool.activateSparkParticle(contact.point);
         //sparkEffect.transform.position = ;
        // sparkEffect.enableEmission = true;
         car.AddForce(contact.normal * contact.relativeVelocity.magnitude * 0.55f, ForceMode2D.Impulse);

@@ -7,7 +7,6 @@ public class MoveBot : MonoBehaviour
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
-    //public ParticleSystem sparkEffect;
     public List<Transform> nodes;
     private List<Transform> FindedNodes;
     float speedForce;
@@ -24,19 +23,11 @@ public class MoveBot : MonoBehaviour
     Rigidbody2D bot;
     Vector3 direction;
     private List<Node> nodeList = new List<Node> { };
-
-
-
-
-    /*public float acceleration = 0.00001f;
-    public float braking = 0.1f;
-    public float steering = 0.001f;*/
     Vector3 target;
 
     void Start()
     {
         bot = GetComponent<Rigidbody2D>();
-       // sparkEffect.enableEmission = false;
 
         if (GameManager.isBot)
         {
@@ -300,9 +291,6 @@ public class MoveBot : MonoBehaviour
         boostEffect.emissionRate = 0;
         motorSound = GetComponent<AudioSource>();
         motorSound.Play();
-        //bot = GetComponent<Rigidbody2D>();
-        
-        //bot.transform.position = new Vector2(nodes[currentNode].position.x, nodes[currentNode].position.y);
 
     }
 
@@ -427,13 +415,12 @@ public class MoveBot : MonoBehaviour
          }
 
          bot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetRot - 90, 0.2f));
-       // bot.transform.up = new Vector3(0, 0, Mathf.LerpAngle(bot.transform.localEulerAngles.z, direction.z, 0.1f)-90);;
 
     }
 
     private void CheckDistance()
     {
-        Debug.Log("CURRENT   " + currentNode);
+        
 
         if (Vector3.Distance(bot.transform.position, nodes[currentNode].position) < 0.5f)
         {
@@ -455,7 +442,6 @@ public class MoveBot : MonoBehaviour
         System.Random rnd = new System.Random();
         int rand1 = rnd.Next(1, 30);
         int rand2 = rnd.Next(1, 30);
-       // int rand3 = rnd.Next(1, 30);
         while (rand1 - rand2 < 3 && rand1 - rand2 > -3)
         {
             rand2 = rnd.Next(1, 30);
@@ -474,12 +460,6 @@ public class MoveBot : MonoBehaviour
         foreach(Node point in nodeList.FindAll(elem => elem.isActive == false)){
             GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             sphere.transform.position = point.point.position;
-
-           
-           /* SphereCollider sphereCollider = sphere.AddComponent<SphereCollider>();
-            //circleCollider.transform.position = point.point.position;
-            sphereCollider.radius = 0.5f;*/
-
            
         }
         foreach (Node point in nodeList.FindAll(elem => elem.isActive == true))

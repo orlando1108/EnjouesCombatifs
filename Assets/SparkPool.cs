@@ -26,15 +26,17 @@ public class SparkPool : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	public GameObject Instantiate(Vector3 position) {
+	public GameObject activateSparkParticle(Vector3 position) {
         for (int i = 0; i < instances.Length; i ++ )
         {
+            Debug.Log("FOR    " + instances[i]);
             if (!instances[i].activeSelf)
             {
+                Debug.Log("ACTIVE SELF    " + instances[i]);
                 lastSelected = i;
                 instances[i].SetActive(true);
                 instances[i].transform.position = position;
-               // instances[i].transform.rotation = rotation;
+                Debug.Log("INSTANCE   " + instances[i]);
                 return instances[i];
             }
         }
