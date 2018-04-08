@@ -27,7 +27,7 @@ public class Node
     public Node(string n, float h)
     {
         name = n;
-        cout = -1; // cout cumulé à mettre à jour lors de l'exploration
+        cout = -1; 
         heuristique = h;
         destinations = null;
     }
@@ -39,7 +39,6 @@ public class IaManager2 : MonoBehaviour {
 
     private List<Node> nodeList = new List<Node> { };
 
-	// Use this for initialization
 	void Start () {
         int i = 0;
         foreach(var x in transformList)
@@ -63,11 +62,6 @@ public class IaManager2 : MonoBehaviour {
         }
         List<Node> close = new List<Node> { };
         List<Node> open = new List<Node> { };
-        /*var res = astar(nodeList[0], nodeList[8], new List<Node>(), new List<Node>());
-        foreach (var iterate in res)
-        {
-            Debug.Log(iterate.name);
-        }*/
     }
 	
 	// Update is called once per frame
@@ -88,11 +82,20 @@ public class IaManager2 : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Implémentation du pathfinding astar pour le parcours de la voiture concurente. Cette méthode permet de déterminer le chemin de plus rapide pour la voiture concurente autonome.
+    /// Un certain nombre de points de passages sont disposés tout au long du circuit pour guider la voiture autour du circuit. Cependant certains points de passages peuvent êtres obstrués par 
+    /// des obstacles. Ce code permet donc de déterminer à la fois le chemin libre mais aussi le chemin de plus rapide autour du circuit. 
+    /// </summary>
+    /// <param name="startNode"></param>
+    /// <param name="endNode"></param>
+    /// <param name="close"></param>
+    /// <param name="open"></param>
+    /// <returns></returns>
     public static List<Transform> astar(Node startNode, Node endNode, List<Node> close, List<Node> open)
     {
         open.Add(startNode);
         float minOpen = open.Min(item => item.cout);
-        Node test = close.Where(x => x.name == endNode.name).FirstOrDefault();
         List<Node> mesNodes = close.Where(x => x.name == endNode.name).ToList();
         float minClose;
         if (mesNodes.Count() != 0)
@@ -104,13 +107,15 @@ public class IaManager2 : MonoBehaviour {
             minClose = minOpen + 1;
         }
         int count2 = 0;
+        //Boucle qui cherche le chemin le plus rapide jusqu'au point final 
         while (minOpen < minClose && count2 < 100)
         {
             count2++;
+            //Si tout les neuds sont éxplorés, le pathfinding est terminé, alors je termine en allant récupèrer le chemin le plus court pour le retourner 
             if (open.Count == 0)
             {
-                List<Transform> result2 = new List<Transform> { endNode.point };
-                List<Node> endListNode2 = close.Where(x => x.name == endNode.name).ToList();
+                List<Transform> result2 = new List<Transform> { endNode.point };//Liste qui contiendra le chemin le plus rapide
+                List<Node> endListNode2 = close.Where(x => x.name == endNode.name).ToList();//Liste qui contien les points "finaux" du chemin
 
                 Node finalNode2;
 
@@ -123,7 +128,7 @@ public class IaManager2 : MonoBehaviour {
                     float minCloseNode2 = endListNode2.Min(item => item.cout);
                     finalNode2 = endListNode2.Where(x => x.cout == minCloseNode2).FirstOrDefault();
                 }
-
+                //Boucle permetant de récupèrer les parents des différents point du chemin le plus court 
                 while (true)
                 {
                     if (getParent(finalNode2) != null)
@@ -138,12 +143,13 @@ public class IaManager2 : MonoBehaviour {
                     }
                 }
             }
+            //Je récupère le noeud le plus proche et le moins couteux
             float min = open.Min(item => item.cout + item.heuristique);
             var nodeToExplore = open.Where(item => item.cout + item.heuristique == min).First();
             open.Remove(nodeToExplore);
 
             close.Add(nodeToExplore);
-           
+
             if (nodeToExplore.name == endNode.name)
             {
                 continue;
@@ -154,12 +160,15 @@ public class IaManager2 : MonoBehaviour {
             }
             Destination[] destArray = new Destination[nodeToExplore.destinations.Length];
             int count = 0;
+            //Exploration de toutes les destinations du noeud choisi
             foreach (Destination myDest in nodeToExplore.destinations)
             {
+                //Vérification que le noeud n'est pas désactivé (obstacles sur le circuit)
                 if (!myDest.node.isActive)
                 {
                     continue;
                 }
+                //Instantiation d'un nouvel objet afin de ne pas créer de dépendances (références d'objets)
                 Destination newDest = myDest;
                 newDest.node = new Node(newDest.node.name, newDest.node.heuristique);
 
@@ -171,7 +180,7 @@ public class IaManager2 : MonoBehaviour {
                 newDest.node.parent = nodeToExplore;
 
                 destArray[count] = newDest;
-
+                //Condition qui permet d'ajouter uniquement les points qui potentiellement seraient plus court (performance)
                 var unique = open.FirstOrDefault(x => x.name == newDest.node.name);
                 if (unique != null)
                 {
@@ -185,11 +194,11 @@ public class IaManager2 : MonoBehaviour {
                 {
                     open.Add(newDest.node);
                 }
-
                 count++;
             }
             nodeToExplore.destinations = destArray;
 
+            //Je détermine si il est nécéssaire de continuer la recherche d'un chemin en fonction du cout des points traités et en attente (open vs close)
             float minNodeOpen = open.Min(item => item.cout + item.heuristique);
             var littleNodeOpen = open.Where(item => item.cout + item.heuristique == minNodeOpen).First();
             minOpen = littleNodeOpen.cout + littleNodeOpen.heuristique;
@@ -207,7 +216,7 @@ public class IaManager2 : MonoBehaviour {
                 minClose++;
             }
         }
-
+        //Si il n'y a plus de raison de continuer alors de retourne le chemin le plus court 
         List<Transform> result = new List<Transform> { endNode.point };
         List<Node> endListNode = close.Where(x => x.name == endNode.name).ToList();
 

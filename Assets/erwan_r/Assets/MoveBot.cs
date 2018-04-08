@@ -7,7 +7,7 @@ public class MoveBot : MonoBehaviour
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
-    public ParticleSystem sparkEffect;
+    //public ParticleSystem sparkEffect;
     public List<Transform> nodes;
     private List<Transform> FindedNodes;
     float speedForce;
@@ -36,7 +36,7 @@ public class MoveBot : MonoBehaviour
     void Start()
     {
         bot = GetComponent<Rigidbody2D>();
-        sparkEffect.enableEmission = false;
+       // sparkEffect.enableEmission = false;
 
         if (GameManager.isBot)
         {

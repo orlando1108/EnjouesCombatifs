@@ -7,17 +7,23 @@ public class MoveCar : MonoBehaviour {
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
-    public ParticleSystem sparkEffect;
+   // public SparkPool sparkPool;
     float speedForce = 9f;
     float torqueForce = -200f;
-    float driftFactorSticky = 2f;
-    float driftFactorSlippy = 0.8f;
-    float maxStickyVelocity = 3.3f;
-    float minStickyVelocity = 1.6f;
+    float driftFactorSticky = 0.6f;
+    float driftFactorSlippy = 0.9f;
+    float maxStickyVelocity = 2.5f;
+    float minStickyVelocity = 1.5f;
     //float audioClipSpeed = 6f;
     AudioSource motorSound;
     Rigidbody2D car;
     float audioClipSpeed = 6f;
+
+    public KeyCode RIGHT;
+    public KeyCode LEFT;
+    public KeyCode FORWARD;
+    public KeyCode BACK;
+    
 
     
     void Start()
@@ -26,7 +32,7 @@ public class MoveCar : MonoBehaviour {
         exhaust.emissionRate = 0;
         skidEffect.emissionRate = 0;
         boostEffect.emissionRate = 0;
-        sparkEffect.enableEmission = false;
+        //sparkEffect.enableEmission = false;
         motorSound = GetComponent<AudioSource>();
         motorSound.Play();
         car = GetComponent<Rigidbody2D>();
@@ -58,19 +64,19 @@ public class MoveCar : MonoBehaviour {
 
         car.velocity = ForwardVelocity() + RightVelocity() * driftFactorSlippy;
 
-        if (Input.GetButton("Accelerate"))
+        if (Input.GetButton("Accelerate") || Input.GetKey(KeyCode.UpArrow))
         {
             car.AddForce(transform.up * speedForce);
             exhaust.emissionRate = 15;
 
         }
-        if (Input.GetButton("Brakes"))
+        if (Input.GetButton("Brakes") || Input.GetKey(KeyCode.LeftControl))
         {
             car.AddForce(transform.up * -speedForce/2);
             skidEffect.emissionRate = 15;
 
         }
-        if (Input.GetButton("Boost"))
+        if (Input.GetButton("Boost") || Input.GetKey(KeyCode.Space))
         {
            // car.AddForce(transform.up * speedForce);
             speedForce = 12;
@@ -81,13 +87,27 @@ public class MoveCar : MonoBehaviour {
             boostEffect.emissionRate = 0;
             speedForce = 9;
         }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            car.angularVelocity += 0.1f;
+        }
+        else
+        {
+            float tf = Mathf.Lerp(0, torqueForce, car.velocity.magnitude / 5);
+            car.angularVelocity = Input.GetAxis("Horizontal") * tf;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            car.angularVelocity -= 0.1f;
+        }
+        else
+        {
+            float tf = Mathf.Lerp(0, torqueForce, car.velocity.magnitude / 5);
+            car.angularVelocity = Input.GetAxis("Horizontal") * tf;
+        }
 
 
-        //if you are using positionnal wheel in your physics, then you probably instead of aadding angular momentum or torque,
-        // you'll instead want to add left/right force at the position of the two front tire/types proportional to your current forward speed.
-        // we are converting some forward speed into sideway force).
-        float tf = Mathf.Lerp(0, torqueForce, car.velocity.magnitude / 5);
-        car.angularVelocity = Input.GetAxis("Horizontal") * tf;
+        
         //car.AddTorque(Input.GetAxis("Horizontal") * torqueForce);
     }
 

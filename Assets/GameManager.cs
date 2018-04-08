@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         CanvasGame.SetActive(false);
         textInfos = GetComponent<TextMesh>();
+        textInfos.GetComponent<Animator>().enabled = false;
         textInfos.text = "Press X to Start !";
         StopGame();
         started = false;
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		
-        if(Input.GetButtonDown("Start") && !started)
+        if((Input.GetButtonDown("Start") || Input.GetKey(KeyCode.Space)) && !started)
         {
             StartCoroutine(Counter());
             started = true;
@@ -47,14 +48,16 @@ public class GameManager : MonoBehaviour {
 
     private IEnumerator Counter()
     {
+        //yield return new WaitForSeconds(1);
         textInfos.GetComponent<Animator>().enabled = true;
         textInfos.GetComponent<MeshRenderer>().enabled = true;
 
         for(int i =3; i>=0; i--)
         {
-            yield return new WaitForSeconds(1);
+            
             textInfos.text = "         " + i;
             GetComponent<AudioSource>().PlayOneShot(startSound);
+            yield return new WaitForSeconds(1);
         }
 
         textInfos.text = "GO MANY !";
