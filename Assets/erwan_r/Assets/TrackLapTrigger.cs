@@ -3,12 +3,10 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class TrackLapTrigger : MonoBehaviour {
-
-    // next trigger in the lap
-    //public TrackLapTrigger next;
+    
+    // mise à jour des tours + affichage du gagnant 
     public bool verif = false;
-
-	// when an object enters this trigger
+    
 	void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.tag == "carPlayer" && verif)
         {

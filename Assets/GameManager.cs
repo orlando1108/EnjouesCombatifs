@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    // Gestion de demmarrage du jeu + arret du jeu à la fin des tours
+    
     TextMesh textInfos;
     public AudioClip startSound;
     public GameObject CanvasGame;
@@ -15,10 +17,9 @@ public class GameManager : MonoBehaviour {
         CanvasGame.SetActive(false);
         textInfos = GetComponent<TextMesh>();
         textInfos.GetComponent<Animator>().enabled = false;
-        textInfos.text = "Press X to Start !";
+        textInfos.text = "Press X to Start ! \n manette ( A,B, joystick, R1 ) \n clavier ( R-arrow, L-arrow, ctrl left, space ) ";
         StopGame();
         started = false;
-      //  isBot = true;
 	}
 
     public void StopGame()

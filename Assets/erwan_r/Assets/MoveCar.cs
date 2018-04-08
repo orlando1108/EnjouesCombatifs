@@ -4,54 +4,44 @@ using UnityEngine;
 
 public class MoveCar : MonoBehaviour {
 
+
+    /*gestion des inputs clavier ou joystick
+     * gestion des forces appliquées avec quelques calculs pour donner en rendu "realiste" et fluide.
+     * gestion des effets de derapage et de boost
+     **/
+
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
-   // public SparkPool sparkPool;
     float speedForce = 9f;
     float torqueForce = -200f;
     float driftFactorSticky = 0.6f;
     float driftFactorSlippy = 0.9f;
     float maxStickyVelocity = 2.5f;
     float minStickyVelocity = 1.5f;
-    //float audioClipSpeed = 6f;
     AudioSource motorSound;
     Rigidbody2D car;
     float audioClipSpeed = 6f;
-
-    public KeyCode RIGHT;
-    public KeyCode LEFT;
-    public KeyCode FORWARD;
-    public KeyCode BACK;
     
 
     
     void Start()
     {
-       // this.GetComponent<ParticleSystem>().enableEmission = false;
         exhaust.emissionRate = 0;
         skidEffect.emissionRate = 0;
         boostEffect.emissionRate = 0;
-        //sparkEffect.enableEmission = false;
         motorSound = GetComponent<AudioSource>();
         motorSound.Play();
         car = GetComponent<Rigidbody2D>();
 
     }
-
-    //check for button up/down then set a bool will used in fixedUpdate
-    void Update()
-    {
-    }
-        // Update is called once per frame
+    
         void FixedUpdate()
     {
-        float driftFactor = driftFactorSticky;
-        float pitch = car.velocity.magnitude / audioClipSpeed;
         skidEffect.emissionRate = 0;
         exhaust.emissionRate = 2;
-
-        
+        float driftFactor = driftFactorSticky;
+        float pitch = car.velocity.magnitude / audioClipSpeed;
         motorSound.pitch = Mathf.Clamp(pitch, 0.5f, 3f);
 
 
@@ -78,7 +68,6 @@ public class MoveCar : MonoBehaviour {
         }
         if (Input.GetButton("Boost") || Input.GetKey(KeyCode.Space))
         {
-           // car.AddForce(transform.up * speedForce);
             speedForce = 12;
             boostEffect.emissionRate = 25;
         }
@@ -105,10 +94,7 @@ public class MoveCar : MonoBehaviour {
             float tf = Mathf.Lerp(0, torqueForce, car.velocity.magnitude / 5);
             car.angularVelocity = Input.GetAxis("Horizontal") * tf;
         }
-
-
         
-        //car.AddTorque(Input.GetAxis("Horizontal") * torqueForce);
     }
 
     Vector2 ForwardVelocity()

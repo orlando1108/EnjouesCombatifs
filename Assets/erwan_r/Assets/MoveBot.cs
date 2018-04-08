@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MoveBot : MonoBehaviour
 {
+    // gestion des mouvements du bot et activation du path finding 
     public ParticleSystem exhaust;
     public ParticleSystem skidEffect;
     public ParticleSystem boostEffect;
@@ -328,7 +329,6 @@ public class MoveBot : MonoBehaviour
             if (currentNode == 0 || currentNode == 14 || currentNode == 9 || currentNode == 8)
             {
                 speedForce = 12;
-                //bot.AddForce(transform.up * speedForce);
                 boostEffect.emissionRate = 25;
             }
             else
@@ -337,12 +337,7 @@ public class MoveBot : MonoBehaviour
                 speedForce = 9;
 
             }
-            // always accelerate
             float velocity = bot.velocity.magnitude;
-            // apply car movement
-            /* bot.velocity = transform.up * velocity;
-             bot.angularVelocity = 0.0f;*/
-
         }
         else
         {
@@ -405,6 +400,8 @@ public class MoveBot : MonoBehaviour
     {
         return transform.right * Vector2.Dot(GetComponent<Rigidbody2D>().velocity, transform.right);
     }
+
+    //permet de dirriger le bot vers le prochain noeud en changeant son angle 
     void SteerTowardsTarget()
     {
     
@@ -418,10 +415,9 @@ public class MoveBot : MonoBehaviour
 
     }
 
+    //verifie la distance avec le prochain noeud et change de noeud dès qu'il est assez pres de l'acuel en cible.
     private void CheckDistance()
     {
-        
-
         if (Vector3.Distance(bot.transform.position, nodes[currentNode].position) < 0.5f)
         {
             speedForce = 2;
@@ -436,7 +432,7 @@ public class MoveBot : MonoBehaviour
         }
 
     }
-
+    //dsactive aleatoirement deux noeuds 
     private List<Node> randomObstacles(List<Node> entry)
     {
         System.Random rnd = new System.Random();
@@ -455,6 +451,8 @@ public class MoveBot : MonoBehaviour
         return entry;
     }
 
+
+    //applique un obstacle aux noeuds qui sont inactifs
     private void generateObstacles()
     {
         foreach(Node point in nodeList.FindAll(elem => elem.isActive == false)){

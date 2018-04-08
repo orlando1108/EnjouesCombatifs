@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class SparkPool : MonoBehaviour {
 
+
+    /* pool de particle qui fonctionne pour la creation des instances
+     * permet de generer plusieurs particules d'etincelles à reutiliser dans les triggers des collisions
+     * */
     public int count;
     public GameObject prefab;
-    private int lastSelected = 0;
-    private GameObject[] instances;
+    private static int lastSelected = 0;
+    private static GameObject[] instances;
 
-
-	// Use this for initialization
+    
 	void Start () {
         instances = new GameObject[count];
         for(int i =0; i<count; i++)
@@ -19,24 +22,18 @@ public class SparkPool : MonoBehaviour {
             instance.SetActive(false);
             instance.transform.parent = this.transform;
             instances[i] = instance;
-
-
         }
 		
 	}
 	
-	// Update is called once per frame
-	public GameObject activateSparkParticle(Vector3 position) {
+	public static GameObject activateSparkParticle(Vector3 position) {
         for (int i = 0; i < instances.Length; i ++ )
         {
-            Debug.Log("FOR    " + instances[i]);
             if (!instances[i].activeSelf)
             {
-                Debug.Log("ACTIVE SELF    " + instances[i]);
                 lastSelected = i;
                 instances[i].SetActive(true);
                 instances[i].transform.position = position;
-                Debug.Log("INSTANCE   " + instances[i]);
                 return instances[i];
             }
         }
@@ -44,7 +41,7 @@ public class SparkPool : MonoBehaviour {
 		
 	}
 
-    public void Destroy(GameObject gameObject)
+    public static void Destroy(GameObject gameObject)
     {
         gameObject.SetActive(false);
     }

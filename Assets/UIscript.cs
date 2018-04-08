@@ -7,7 +7,7 @@ public class UIscript : MonoBehaviour {
 
     public Text txtLaps;
     public Text txtTime;
-    public int Laps = 3;
+    public int Laps = 10;
     float startTime;
 
 	void Start () {
@@ -15,22 +15,27 @@ public class UIscript : MonoBehaviour {
         startTime = Time.time;
 
     }
-	
-	// Update is called once per frame
+
+    //calcul + affichage du temps ecoulé 
 	void Update () {
-        
-        int min = Mathf.FloorToInt((Time.time - startTime) / 60);
-        int sec = Mathf.FloorToInt((Time.time - startTime) - min * 60);
-        txtTime.text = "Time : " + string.Format("{0:0}:{1:00}", min, sec);
+
+        if (Laps > 0)
+        {
+            int min = Mathf.FloorToInt((Time.time - startTime) / 60);
+            int sec = Mathf.FloorToInt((Time.time - startTime) - min * 60);
+            txtTime.text = "Time : " + string.Format("{0:0}:{1:00}", min, sec);
+
+        }
+            
 	}
 
+    //affichage des tours et arret du jeu
     public void MajLaps()
     {
         Laps -= 1;
         txtLaps.text = "Laps : " + Laps;
 
-        //end
-        if(Laps == 0)
+        if (Laps == 0)
         {
             
             GameObject.Find("TextInfos").GetComponent<GameManager>().StopGame();
